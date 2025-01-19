@@ -4,3 +4,12 @@
   padding: 2rem;
   text-align: center;
 }
+
+nav header {
+  max-width: 100% !important;
+}
+.logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
