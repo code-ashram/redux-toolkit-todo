@@ -3,28 +3,28 @@ import Todo from '../models/Todo.ts'
 const mockData: Todo[] = [
   {
     id: '1',
-    title: 'Write markup',
+    title: 'Write a markup',
     isDone: true,
     creationTime: '2025-01-19T10:00:00.000Z',
     priority: 'High'
   },
   {
     id: '2',
-    title: 'Make components',
+    title: 'Make the components',
     isDone: true,
     creationTime: '2025-01-19T11:00:00.000Z',
     priority: 'Mid'
   },
   {
     id: '3',
-    title: 'Write code',
+    title: 'Write a code',
     isDone: false,
     creationTime: '2025-01-20T11:30:00.000Z',
     priority: 'Low'
   },
   {
     id: '4',
-    title: 'Make code review',
+    title: 'Make a code review',
     isDone: false,
     creationTime: '2025-01-20T14:10:00.000Z',
     priority: 'High'
@@ -52,7 +52,7 @@ const mockData: Todo[] = [
   },
   {
     id: '8',
-    title: 'Make refactoring again',
+    title: 'Make a refactoring again',
     isDone: false,
     creationTime: '2025-01-23T17:20:00.000Z',
     priority: 'Mid'

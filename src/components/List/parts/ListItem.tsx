@@ -1,18 +1,22 @@
-import { Card, CardBody } from '@heroui/react'
+import { Card, CardBody, Checkbox } from '@heroui/react'
 
 import Todo from '../../../models/Todo.ts'
 import { FC } from 'react'
 
 type Props = {
-  todo: Todo
+  todo: Todo,
+  item?: Todo
 }
 
-const ListItem: FC<Props> = ({todo}) => {
+const ListItem: FC<Props> = ({ todo }) => {
 
   return (
     <Card>
       <CardBody>
-        <p>{todo.title}</p>
+        <Checkbox defaultSelected={todo.isDone} lineThrough>
+          {todo.title}
+        </Checkbox>
+
       </CardBody>
     </Card>
   )

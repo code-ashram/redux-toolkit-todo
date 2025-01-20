@@ -1,12 +1,18 @@
-import { Tabs, Tab, Card, CardBody, Navbar, NavbarContent, NavbarBrand, Input } from '@heroui/react'
+import { Input, Navbar, NavbarBrand, NavbarContent, Tab, Tabs } from '@heroui/react'
+
+
 
 import ThemeSwitcher from './components/ThemeSwitcher'
 
+import { STATUS } from './models'
 import { Logo, SearchIcon } from './assets'
 
 import './App.scss'
+import List from './components/List/List.tsx'
+import mockData from './api/mockData.ts'
 
 export const App = () => {
+
 
   return (
     <>
@@ -22,6 +28,7 @@ export const App = () => {
 
         <NavbarContent as="div" className="items-center" justify="end">
           <ThemeSwitcher />
+
           <Input
             classNames={{
               base: 'max-w-full sm:max-w-[10rem] h-10',
@@ -42,31 +49,16 @@ export const App = () => {
 
         <div className="flex w-full flex-col">
           <Tabs aria-label="Options">
-            <Tab key="all" title="All">
-              <Card>
-                <CardBody>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                  incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                  exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                </CardBody>
-              </Card>
+            <Tab key="all" title={STATUS.ALL}>
+              <List list={mockData} status={STATUS.ALL}/>
             </Tab>
-            <Tab key="incompleted" title="Incompleted">
-              <Card>
-                <CardBody>
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                  ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
-                  esse cillum dolore eu fugiat nulla pariatur.
-                </CardBody>
-              </Card>
+
+            <Tab key="active" title={STATUS.ACTIVE}>
+              <List list={mockData} status={STATUS.ACTIVE}/>
             </Tab>
-            <Tab key="completed" title="Completed">
-              <Card>
-                <CardBody>
-                  Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-                  mollit anim id est laborum.
-                </CardBody>
-              </Card>
+
+            <Tab key="completed" title={STATUS.COMPLETED}>
+              <List list={mockData} status={STATUS.COMPLETED}/>
             </Tab>
           </Tabs>
         </div>
