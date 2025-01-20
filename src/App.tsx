@@ -48,7 +48,7 @@ export const App = () => {
       <div className="flex flex-col px-4">
 
         <div className="flex w-full flex-col">
-          <Tabs aria-label="Options">
+          <Tabs aria-label="Options" size="lg">
             <Tab key="all" title={STATUS.ALL}>
               <List list={mockData} status={STATUS.ALL}/>
             </Tab>

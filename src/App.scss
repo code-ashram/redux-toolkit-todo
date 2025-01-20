@@ -8,8 +8,13 @@
 nav header {
   max-width: 100% !important;
 }
+
 .logo {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.listItem:not(:first-child) {
+  margin-top: 5px;
 }

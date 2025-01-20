@@ -1,6 +1,6 @@
 import { FC, useMemo } from 'react'
 
-import ListItem from './parts/ListItem.tsx'
+import ListItem from './parts/ListItem/ListItem.tsx'
 
 import Todo from '../../models/Todo.ts'
 import { STATUS } from '../../models'
