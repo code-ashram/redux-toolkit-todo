@@ -35,7 +35,7 @@ const TodoForm: FC<Props> = ({ className }) => {
       >
         <ModalContent>
           {(onClose: () => void) => (
-            <>
+            <form>
               <ModalHeader className="flex flex-col gap-1">Add new Todo</ModalHeader>
 
               <ModalBody>
@@ -52,11 +52,11 @@ const TodoForm: FC<Props> = ({ className }) => {
 
 
               <ModalFooter>
-                <Button color="primary" onPress={onClose}>
+                <Button type="submit" color="primary" onPress={onClose}>
                   Add
                 </Button>
               </ModalFooter>
-            </>
+            </form>
           )}
         </ModalContent>
       </Modal>

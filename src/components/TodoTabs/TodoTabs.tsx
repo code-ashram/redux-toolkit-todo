@@ -1,27 +1,27 @@
 import { FC } from 'react'
+import { useSelector } from 'react-redux'
 import { Tab, Tabs } from '@heroui/react'
 
 import List from '../List/List.tsx'
 
+import { RootState } from '../../store/todoStore.ts'
+
 import { STATUS } from '../../models'
-import mockData from '../../api/mockData.ts'
 
-const TodoTabs: FC = () => (
-  <div className="flex w-full flex-col">
-    <Tabs aria-label="Options" size="lg">
-      <Tab key="all" title={STATUS.ALL}>
-        <List list={mockData} status={STATUS.ALL} />
-      </Tab>
+const TodoTabs: FC = () => {
+  const { tasks } = useSelector((state: RootState) => state)
 
-      <Tab key="active" title={STATUS.ACTIVE}>
-        <List list={mockData} status={STATUS.ACTIVE} />
-      </Tab>
-
-      <Tab key="completed" title={STATUS.COMPLETED}>
-        <List list={mockData} status={STATUS.COMPLETED} />
-      </Tab>
-    </Tabs>
-  </div>
-)
+  return (
+    <div className="flex w-full flex-col">
+      <Tabs aria-label="Options" size="lg">
+        {Object.values(STATUS).map((status) =>
+          <Tab key={status} title={status}>
+            <List list={tasks} status={status} />
+          </Tab>
+        )}
+      </Tabs>
+    </div>
+  )
+}
 
 export default TodoTabs
