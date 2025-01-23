@@ -1,18 +1,17 @@
 import { Input, Navbar, NavbarBrand, NavbarContent, Tab, Tabs } from '@heroui/react'
 
-
-
 import ThemeSwitcher from './components/ThemeSwitcher'
+import List from './components/List/List.tsx'
 
 import { STATUS } from './models'
+import mockData from './api/mockData.ts'
+
 import { Logo, SearchIcon } from './assets'
 
 import './App.scss'
-import List from './components/List/List.tsx'
-import mockData from './api/mockData.ts'
+import TodoForm from './components/TodoForm'
 
 export const App = () => {
-
 
   return (
     <>
@@ -24,6 +23,10 @@ export const App = () => {
               <p className="hidden sm:block font-bold text-inherit ml-1">Code Ashram</p>
             </a>
           </NavbarBrand>
+        </NavbarContent>
+
+        <NavbarContent justify="center">
+          <TodoForm className="w-[100px]" />
         </NavbarContent>
 
         <NavbarContent as="div" className="items-center" justify="end">
@@ -50,15 +53,15 @@ export const App = () => {
         <div className="flex w-full flex-col">
           <Tabs aria-label="Options" size="lg">
             <Tab key="all" title={STATUS.ALL}>
-              <List list={mockData} status={STATUS.ALL}/>
+              <List list={mockData} status={STATUS.ALL} />
             </Tab>
 
             <Tab key="active" title={STATUS.ACTIVE}>
-              <List list={mockData} status={STATUS.ACTIVE}/>
+              <List list={mockData} status={STATUS.ACTIVE} />
             </Tab>
 
             <Tab key="completed" title={STATUS.COMPLETED}>
-              <List list={mockData} status={STATUS.COMPLETED}/>
+              <List list={mockData} status={STATUS.COMPLETED} />
             </Tab>
           </Tabs>
         </div>
