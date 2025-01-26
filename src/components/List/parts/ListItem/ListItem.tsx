@@ -4,7 +4,7 @@ import { Card, CardBody, Checkbox } from '@heroui/react'
 
 import ItemDropdown from './parts/ItemDropdown.tsx'
 
-import {deleteTask} from '../../../../store/todoSlice.ts'
+import {deleteTask, changeStatus} from '../../../../store/todoSlice.ts'
 
 import Todo from '../../../../models/Todo.ts'
 
@@ -19,11 +19,15 @@ const ListItem: FC<Props> = ({ todo }) => {
     dispatch(deleteTask(id))
   }
 
+  const toggleTaskStatus = (id: string) => {
+    dispatch(changeStatus(id))
+  }
+
   return (
     <Card className="listItem">
       <CardBody className="flex flex-row justify-between items-center p-2">
         <div>
-          <Checkbox defaultSelected={todo.isDone} lineThrough>
+          <Checkbox defaultSelected={todo.isDone} lineThrough onChange={() => toggleTaskStatus(todo.id)}>
             {todo.title}
           </Checkbox>
         </div>
