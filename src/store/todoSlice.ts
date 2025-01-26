@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import Todo from '../models/Todo.ts'
 import mockData from '../api/mockData.ts'
@@ -15,18 +15,21 @@ const todoSlice = createSlice({
   name: 'tasks',
   initialState,
   reducers: {
-    create: (state, { payload }) => {
+    createTask: (state, { payload }: PayloadAction<Omit<Todo, 'id' | 'creationTime' >>) => {
       state.tasks.push({
         id: crypto.randomUUID(),
-        isDone: (payload as Omit<Todo, 'id' | 'creationTime'>).isDone,
-        title: (payload as Omit<Todo, 'id' | 'creationTime'>).title.trim(),
+        isDone: payload.isDone,
+        title: payload.title.trim(),
         creationTime: new Date().toISOString(),
-        priority: (payload as Omit<Todo, 'id' | 'creationTime'>).priority
+        priority: payload.priority
       })
+    },
+    deleteTask: (state, { payload }: PayloadAction<string>) => {
+      state.tasks = state.tasks.filter((todo) => todo.id !== payload)
     }
   }
 })
 
-
+export const { createTask, deleteTask } = todoSlice.actions
 
 export default todoSlice.reducer

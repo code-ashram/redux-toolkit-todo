@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, FormEvent, useMemo, useState } from 'react'
 
 import {
   Modal,
@@ -11,19 +11,33 @@ import {
 } from '@heroui/react'
 
 import { PRIORITY } from '../../models'
+import Todo from '../../models/Todo.ts'
+import { generateTodo } from '../../../utils'
 
 import { AddIcon } from '../../assets'
 
 type Props = {
-  className?: string
+   onSubmit: (todo: Todo) => void,
 }
 
-const TodoForm: FC<Props> = ({ className }) => {
+const TodoForm: FC<Props> = ({onSubmit}) => {
+  const [todo, setTodo] = useState<Todo>(generateTodo)
+  const isValid: boolean = useMemo(() => Boolean(todo.title), [todo.title])
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
+
+  const handleChangeTodo = (payload: Partial<Todo>): void => {
+    setTodo(prevTodo => ({ ...prevTodo, ...payload }))
+  }
+
+  const handleSubmitTodo = (e: FormEvent) => {
+    e.preventDefault()
+    onSubmit(todo)
+    setTodo(prevTodo => ({ ...prevTodo, title: '', priority: PRIORITY.MID }))
+  }
 
   return (
     <>
-      <Button className={className} color="primary" variant="shadow" onPress={onOpen}>
+      <Button className="w-[100px]" color="primary" variant="shadow" onPress={onOpen}>
         <AddIcon />
       </Button>
 
@@ -35,13 +49,27 @@ const TodoForm: FC<Props> = ({ className }) => {
       >
         <ModalContent>
           {(onClose: () => void) => (
-            <form>
+            <form onSubmit={handleSubmitTodo}>
               <ModalHeader className="flex flex-col gap-1">Add new Todo</ModalHeader>
 
               <ModalBody>
-                <Input required label="Title" placeholder="Enter your task" size="md" type="text" />
+                <Input
+                  required
+                  type="text"
+                  label="Title"
+                  placeholder="Enter your task"
+                  value={todo?.title}
+                  onChange={(e) => handleChangeTodo({ title: e.target.value })}
+                  size="md"
+                />
 
-                <Select label="Priority" placeholder="Select task priority">
+                <Select
+                  value={todo?.priority}
+                  defaultSelectedKeys={[PRIORITY.MID]}
+                  label="Priority"
+                  placeholder="Select task priority"
+                  onChange={(e) => handleChangeTodo({ priority: e.target.value })}
+                >
                   {
                     Object.values(PRIORITY).map((priority) => (
                       <SelectItem key={priority}>{priority}</SelectItem>
@@ -50,9 +78,8 @@ const TodoForm: FC<Props> = ({ className }) => {
                 </Select>
               </ModalBody>
 
-
               <ModalFooter>
-                <Button type="submit" color="primary" onPress={onClose}>
+                <Button type="submit" isDisabled={!isValid} color="primary" onPress={onClose}>
                   Add
                 </Button>
               </ModalFooter>
