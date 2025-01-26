@@ -12,8 +12,8 @@ import Todo from '../../models/Todo.ts'
 const TodoNavbar: FC = () => {
   const dispatch = useDispatch()
 
-  const handleCreateTodo = (todo: Todo) => {
-    dispatch(createTask(todo))
+  const handleCreateTodo = (data: Pick<Todo, 'title' | 'priority'>) => {
+    dispatch(createTask(data))
   }
 
   return (

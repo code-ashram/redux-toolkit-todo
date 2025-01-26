@@ -15,10 +15,10 @@ const todoSlice = createSlice({
   name: 'tasks',
   initialState,
   reducers: {
-    createTask: (state, { payload }: PayloadAction<Omit<Todo, 'id' | 'creationTime' >>) => {
+    createTask: (state, { payload }: PayloadAction<Omit<Todo, 'id' | 'creationTime' | 'isDone'>>) => {
       state.tasks.push({
         id: crypto.randomUUID(),
-        isDone: payload.isDone,
+        isDone: false,
         title: payload.title.trim(),
         creationTime: new Date().toISOString(),
         priority: payload.priority
