@@ -28,10 +28,8 @@ const todoSlice = createSlice({
       state.tasks = state.tasks.filter((todo) => todo.id !== payload)
     },
     changeStatus: (state, { payload }: PayloadAction<string>) => {
-      state.tasks = state.tasks.map((task) => task.id === payload
-        ? { ...task, isDone: !task.isDone }
-        : task
-      )
+      const todo = state.tasks.find((task) => task.id === payload)
+      if (todo) todo.isDone = !todo.isDone
     }
   }
 })
