@@ -1,31 +1,36 @@
 import { FC, useMemo } from 'react'
+import { useSelector } from 'react-redux'
 
 import ListItem from './parts/ListItem/ListItem.tsx'
-
 import Todo from '../../models/Todo.ts'
 import { STATUS } from '../../models'
+import { RootState } from '../../store/todoStore.ts'
 
 type Props = {
-  list: Todo[]
   status: STATUS
+  onEdit: (todo: Todo) => void
 }
 
-const List: FC<Props> = ({ list, status }) => {
-  const listWithStatus: Todo[] = useMemo(() => {
+const List: FC<Props> = ({ status, onEdit }) => {
+  const { tasks } = useSelector((state: RootState) => state)
+
+  const filteredTasks: Todo[] = useMemo(() => {
     {
       switch (status) {
         case STATUS.COMPLETED:
-          return list.filter((listItem) => listItem.isDone)
+          return tasks.filter((listItem) => listItem.isDone)
         case STATUS.ACTIVE:
-          return list.filter((listItem) => !listItem.isDone)
+          return tasks.filter((listItem) => !listItem.isDone)
         default:
-          return list.map((listItem) => listItem)
+          return tasks.map((listItem) => listItem)
       }
     }
-  }, [list, status])
+  }, [tasks, status])
 
   return (
-    listWithStatus.map((listItem) => <ListItem key={listItem.id} todo={listItem} />)
+    filteredTasks.map((todo) => (
+      <ListItem key={todo.id} todo={todo} onEdit={() => onEdit(todo)} />
+    ))
   )
 }
 

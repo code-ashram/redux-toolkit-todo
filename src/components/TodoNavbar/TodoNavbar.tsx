@@ -1,19 +1,24 @@
 import { FC } from 'react'
-import { useDispatch } from 'react-redux'
-import {createTask} from '../../store/todoSlice.ts'
-import { Input, Navbar, NavbarBrand, NavbarContent } from '@heroui/react'
+import { Button, Input, Navbar, NavbarBrand, NavbarContent } from '@heroui/react'
 
 import TodoForm from '../TodoForm'
 import ThemeSwitcher from '../ThemeSwitcher'
-
-import { Logo, SearchIcon } from '../../assets'
+import { AddIcon, Logo, SearchIcon } from '../../assets'
 import Todo from '../../models/Todo.ts'
+import { INITIAL_FIELDS } from '../TodoForm/constants.ts'
 
-const TodoNavbar: FC = () => {
-  const dispatch = useDispatch()
+type Props = {
+  task: Todo | Partial<Todo> | null
+  onSelect: (task: Todo | Partial<Todo> | null) => void
+}
 
-  const handleCreateTodo = (data: Pick<Todo, 'title' | 'priority'>) => {
-    dispatch(createTask(data))
+const TodoNavbar: FC<Props> = ({ task, onSelect }) => {
+  const onClose = () => {
+    onSelect(null)
+  }
+
+  const handleCreateTodo = () => {
+    onSelect(INITIAL_FIELDS)
   }
 
   return (
@@ -28,7 +33,13 @@ const TodoNavbar: FC = () => {
       </NavbarContent>
 
       <NavbarContent justify="center">
-        <TodoForm onSubmit={handleCreateTodo} />
+        <Button className="w-[100px]" color="primary" variant="shadow" onPress={handleCreateTodo}>
+          <AddIcon />
+        </Button>
+
+        {task && (
+          <TodoForm task={task} onClose={onClose} />
+        )}
       </NavbarContent>
 
       <NavbarContent as="div" className="items-center" justify="end">

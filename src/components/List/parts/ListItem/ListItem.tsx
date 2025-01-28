@@ -10,16 +10,17 @@ import Todo from '../../../../models/Todo.ts'
 
 type Props = {
   todo: Todo
+  onEdit: () => void
 }
 
-const ListItem: FC<Props> = ({ todo }) => {
+const ListItem: FC<Props> = ({ todo, onEdit }) => {
   const dispatch = useDispatch()
 
-  const handleDeleteTodo = (id: string) => {
+  const onDeleteTodo = (id: string) => {
     dispatch(deleteTask(id))
   }
 
-  const toggleTaskStatus = (id: string) => {
+  const onToggleStatus = (id: string) => {
     dispatch(changeStatus(id))
   }
 
@@ -27,13 +28,13 @@ const ListItem: FC<Props> = ({ todo }) => {
     <Card className="listItem">
       <CardBody className="flex flex-row justify-between items-center p-2">
         <div>
-          <Checkbox defaultSelected={todo.isDone} lineThrough onChange={() => toggleTaskStatus(todo.id)}>
+          <Checkbox defaultSelected={todo.isDone} onChange={() => onToggleStatus(todo.id)} lineThrough>
             {todo.title}
           </Checkbox>
         </div>
 
         <div>
-          <ItemDropdown onEdit={() => console.log('Edit!')} onDelete={() => handleDeleteTodo(todo.id)} />
+          <ItemDropdown onEdit={onEdit} onDelete={() => onDeleteTodo(todo.id)} />
         </div>
       </CardBody>
     </Card>

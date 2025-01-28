@@ -1,5 +1,5 @@
-import { FC, FormEvent, useMemo, useState } from 'react'
-
+import { FC, FormEvent, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import {
   Modal,
   ModalContent,
@@ -7,87 +7,100 @@ import {
   ModalBody,
   ModalFooter,
   Button,
-  useDisclosure, Input, Select, SelectItem
+  Form,
+  Input,
+  Select,
+  SelectItem,
+  useDisclosure
 } from '@heroui/react'
 
-import { PRIORITY } from '../../models'
+import { createTask, updateTask } from '../../store/todoSlice.ts'
+import { Priority } from '../../models'
 import Todo from '../../models/Todo.ts'
-import { generateTodo } from '../../../utils'
-
-import { AddIcon } from '../../assets'
 
 type Props = {
-   onSubmit: (todo: Todo) => void,
+  task: Todo | Partial<Todo>
+  onClose: () => void
 }
 
-const TodoForm: FC<Props> = ({onSubmit}) => {
-  const [todo, setTodo] = useState<Todo>(generateTodo)
-  const isValid: boolean = useMemo(() => Boolean(todo.title), [todo.title])
-  const { isOpen, onOpen, onOpenChange } = useDisclosure()
+const TodoForm: FC<Props> = ({ task, onClose }) => {
+  const dispatch = useDispatch()
+  const [todo, setTodo] = useState<Todo | Partial<Todo>>(task)
+  const { onOpenChange } = useDisclosure()
 
-  const handleChangeTodo = (payload: Partial<Todo>): void => {
-    setTodo(prevTodo => ({ ...prevTodo, ...payload }))
+  const handleChangeTodo = (payload: Partial<Todo>) => {
+    setTodo((prevTodo) => ({ ...prevTodo, ...payload }))
   }
 
   const handleSubmitTodo = (e: FormEvent) => {
     e.preventDefault()
-    onSubmit(todo)
-    setTodo(prevTodo => ({ ...prevTodo, title: '', priority: PRIORITY.MID }))
+    dispatch(task.id ? updateTask(todo as Todo) : createTask({
+      title: todo.title || '',
+      priority: todo.priority || ''
+    }))
+    onClose()
   }
 
   return (
-    <>
-      <Button className="w-[100px]" color="primary" variant="shadow" onPress={onOpen}>
-        <AddIcon />
-      </Button>
+    <Modal
+      isDismissable={false}
+      isKeyboardDismissDisabled={true}
+      onOpenChange={onOpenChange}
+      closeButton={
+        <Button color="default" variant="light" onPress={onClose}>
+          X
+        </Button>
+      }
+      autoFocus
+      isOpen
+    >
+      <ModalContent>
+        <Form
+          className="w-full max-w-xs flex flex-col gap-4"
+          validationBehavior="native"
+          onReset={onClose}
+          onSubmit={handleSubmitTodo}
+        >
+          <ModalHeader className="flex flex-col gap-1">Add new task</ModalHeader>
 
-      <Modal
-        isDismissable={false}
-        isKeyboardDismissDisabled={true}
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-      >
-        <ModalContent>
-          {(onClose: () => void) => (
-            <form onSubmit={handleSubmitTodo}>
-              <ModalHeader className="flex flex-col gap-1">Add new Todo</ModalHeader>
+          <ModalBody>
+            <Input
+              type="text"
+              size="md"
+              label="Title"
+              placeholder="Enter your task"
+              value={todo.title}
+              onChange={(e) => handleChangeTodo({ title: e.target.value })}
+              required
+            />
 
-              <ModalBody>
-                <Input
-                  required
-                  type="text"
-                  label="Title"
-                  placeholder="Enter your task"
-                  value={todo?.title}
-                  onChange={(e) => handleChangeTodo({ title: e.target.value })}
-                  size="md"
-                />
+            <Select
+              label="Priority"
+              placeholder="Select task priority"
+              defaultSelectedKeys={[Priority.Mid]}
+              value={todo?.priority}
+              onChange={(e) => handleChangeTodo({ priority: e.target.value })}
+            >
+              {
+                Object.values(Priority).map((priority) => (
+                  <SelectItem key={priority}>{priority}</SelectItem>
+                ))
+              }
+            </Select>
+          </ModalBody>
 
-                <Select
-                  value={todo?.priority}
-                  defaultSelectedKeys={[PRIORITY.MID]}
-                  label="Priority"
-                  placeholder="Select task priority"
-                  onChange={(e) => handleChangeTodo({ priority: e.target.value })}
-                >
-                  {
-                    Object.values(PRIORITY).map((priority) => (
-                      <SelectItem key={priority}>{priority}</SelectItem>
-                    ))
-                  }
-                </Select>
-              </ModalBody>
+          <ModalFooter>
+            <Button type="reset" color="default" variant="flat">
+              Close
+            </Button>
 
-              <ModalFooter>
-                <Button type="submit" isDisabled={!isValid} color="primary" onPress={onClose}>
-                  Add
-                </Button>
-              </ModalFooter>
-            </form>
-          )}
-        </ModalContent>
-      </Modal>
-    </>
+            <Button type="submit" isDisabled={!todo.title?.trim()} color="primary">
+              Add
+            </Button>
+          </ModalFooter>
+        </Form>
+      </ModalContent>
+    </Modal>
   )
 }
 

@@ -30,10 +30,17 @@ const todoSlice = createSlice({
     changeStatus: (state, { payload }: PayloadAction<string>) => {
       const todo = state.tasks.find((task) => task.id === payload)
       if (todo) todo.isDone = !todo.isDone
+    },
+    updateTask: (state, { payload }: PayloadAction<Todo>) => {
+      const todo = state.tasks.find((task) => task.id === payload.id)
+      if (todo) {
+        todo.title = payload.title
+        todo.priority = payload.priority
+      }
     }
   }
 })
 
-export const { createTask, deleteTask, changeStatus } = todoSlice.actions
+export const { createTask, deleteTask, changeStatus, updateTask } = todoSlice.actions
 
 export default todoSlice.reducer
