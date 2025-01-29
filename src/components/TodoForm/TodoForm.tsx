@@ -56,14 +56,14 @@ const TodoForm: FC<Props> = ({ task, onClose }) => {
     >
       <ModalContent>
         <Form
-          className="w-full max-w-xs flex flex-col gap-4"
+          className="w-full max-w-lg flex flex-col gap-4"
           validationBehavior="native"
           onReset={onClose}
           onSubmit={handleSubmitTodo}
         >
           <ModalHeader className="flex flex-col gap-1">Add new task</ModalHeader>
 
-          <ModalBody>
+          <ModalBody className="w-full">
             <Input
               type="text"
               size="md"
