@@ -3,9 +3,12 @@ import { Button, Input, Navbar, NavbarBrand, NavbarContent } from '@heroui/react
 
 import TodoForm from '../TodoForm'
 import ThemeSwitcher from '../ThemeSwitcher'
-import { AddIcon, Logo, SearchIcon } from '../../assets'
+
 import Todo from '../../models/Todo.ts'
 import { INITIAL_FIELDS } from '../TodoForm/constants.ts'
+
+import { AddIcon, Logo, SearchIcon } from '../../assets'
+
 
 type Props = {
   task: Todo | Partial<Todo> | null
