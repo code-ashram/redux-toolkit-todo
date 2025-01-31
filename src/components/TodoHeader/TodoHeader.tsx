@@ -1,7 +1,6 @@
 import { FC } from 'react'
 import { Button, Input, Navbar, NavbarBrand, NavbarContent } from '@heroui/react'
 
-import TodoForm from '../TodoForm'
 import ThemeSwitcher from '../ThemeSwitcher'
 
 import Todo from '../../models/Todo.ts'
@@ -15,10 +14,10 @@ type Props = {
   onSelect: (task: Todo | Partial<Todo> | null) => void
 }
 
-const TodoHeader: FC<Props> = ({ task, onSelect }) => {
-  const onClose = () => {
-    onSelect(null)
-  }
+const TodoHeader: FC<Props> = ({ onSelect }) => {
+  // const onClose = () => {
+  //   onSelect(null)
+  // }
 
   const handleCreateTodo = () => {
     onSelect(INITIAL_FIELDS)
@@ -39,10 +38,6 @@ const TodoHeader: FC<Props> = ({ task, onSelect }) => {
         <Button className="w-[100px]" color="primary" variant="shadow" onPress={handleCreateTodo}>
           <AddIcon />
         </Button>
-
-        {task && (
-          <TodoForm task={task} onClose={onClose} />
-        )}
       </NavbarContent>
 
       <NavbarContent as="div" className="items-center" justify="end">
