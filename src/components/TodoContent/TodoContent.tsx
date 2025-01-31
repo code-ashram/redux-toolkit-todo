@@ -10,7 +10,7 @@ type Props = {
   onEdit: (todo: Todo) => void
 }
 
-const TodoTabs: FC<Props> = ({ onEdit }) => (
+const TodoContent: FC<Props> = ({ onEdit }) => (
   <div className="flex w-full flex-col">
     <Tabs aria-label="Options" size="lg">
       {Object.values(STATUS).map((status) =>
@@ -22,4 +22,4 @@ const TodoTabs: FC<Props> = ({ onEdit }) => (
   </div>
 )
 
-export default TodoTabs
+export default TodoContent

@@ -15,7 +15,7 @@ type Props = {
   onSelect: (task: Todo | Partial<Todo> | null) => void
 }
 
-const TodoNavbar: FC<Props> = ({ task, onSelect }) => {
+const TodoHeader: FC<Props> = ({ task, onSelect }) => {
   const onClose = () => {
     onSelect(null)
   }
@@ -66,4 +66,4 @@ const TodoNavbar: FC<Props> = ({ task, onSelect }) => {
   )
 }
 
-export default TodoNavbar
+export default TodoHeader

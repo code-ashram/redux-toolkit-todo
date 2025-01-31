@@ -1,6 +1,6 @@
 import { FC, useState } from 'react'
-import TodoNavbar from './components/TodoNavbar'
-import TodoTabs from './components/TodoTabs'
+import TodoHeader from './components/TodoHeader'
+import TodoContent from './components/TodoContent'
 
 import './App.scss'
 import Todo from './models/Todo.ts'
@@ -14,9 +14,9 @@ export const App:FC = () => {
 
   return (
     <>
-      <TodoNavbar task={selectedTask} onSelect={setSelectedTask} />
+      <TodoHeader task={selectedTask} onSelect={setSelectedTask} />
 
-      <TodoTabs onEdit={onEdit} />
+      <TodoContent onEdit={onEdit} />
     </>
   )
 }
