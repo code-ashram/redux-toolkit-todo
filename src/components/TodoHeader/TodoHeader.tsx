@@ -8,17 +8,12 @@ import { INITIAL_FIELDS } from '../TodoForm/constants.ts'
 
 import { AddIcon, Logo, SearchIcon } from '../../assets'
 
-
 type Props = {
   task: Todo | Partial<Todo> | null
   onSelect: (task: Todo | Partial<Todo> | null) => void
 }
 
 const TodoHeader: FC<Props> = ({ onSelect }) => {
-  // const onClose = () => {
-  //   onSelect(null)
-  // }
-
   const handleCreateTodo = () => {
     onSelect(INITIAL_FIELDS)
   }

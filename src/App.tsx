@@ -1,16 +1,12 @@
 import { FC, useState } from 'react'
+
 import TodoHeader from './components/TodoHeader'
 import TodoContent from './components/TodoContent'
-
-import './App.scss'
-import Todo from './models/Todo.ts'
 import TodoForm from './components/TodoForm'
 
-type Props = {
-  onPress: (id: string) => void
-}
+import Todo from './models/Todo.ts'
 
-
+import './App.scss'
 
 export const App: FC = () => {
   const [selectedTask, setSelectedTask] = useState<Todo | Partial<Todo> | null>(null)
@@ -28,7 +24,7 @@ export const App: FC = () => {
       <TodoHeader task={selectedTask} onSelect={setSelectedTask} />
 
       {selectedTask && (
-        <TodoForm task={selectedTask} onClose={() => handleClose} />
+        <TodoForm task={selectedTask} onClose={() => handleClose()} />
       )}
 
       <TodoContent onEdit={onEdit} />
