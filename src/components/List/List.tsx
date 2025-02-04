@@ -3,11 +3,11 @@ import { useSelector } from 'react-redux'
 
 import ListItem from './parts/ListItem/ListItem.tsx'
 import Todo from '../../models/Todo.ts'
-import { STATUS } from '../../models'
+import { Status } from '../../models'
 import { RootState } from '../../store/todoStore.ts'
 
 type Props = {
-  status: STATUS
+  status: Status
   onEdit: (todo: Todo) => void
 }
 
@@ -17,9 +17,9 @@ const List: FC<Props> = ({ status, onEdit }) => {
   const filteredTasks: Todo[] = useMemo(() => {
     {
       switch (status) {
-        case STATUS.COMPLETED:
+        case Status.Completed:
           return tasks.filter((listItem) => listItem.isDone)
-        case STATUS.ACTIVE:
+        case Status.Active:
           return tasks.filter((listItem) => !listItem.isDone)
         default:
           return tasks.map((listItem) => listItem)
@@ -29,8 +29,7 @@ const List: FC<Props> = ({ status, onEdit }) => {
 
   return (
     filteredTasks.map((todo) => (
-      <ListItem key={todo.id} todo={todo} onEdit={() => onEdit(todo)} />
-    ))
+      <ListItem key={todo.id} todo={todo} onEdit={() => onEdit(todo)} />))
   )
 }
 
