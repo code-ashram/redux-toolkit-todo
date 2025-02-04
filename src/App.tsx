@@ -24,7 +24,7 @@ export const App: FC = () => {
       <TodoHeader task={selectedTask} onSelect={setSelectedTask} />
 
       {selectedTask && (
-        <TodoForm task={selectedTask} onClose={() => handleClose()} />
+        <TodoForm task={selectedTask} onClose={handleClose} />
       )}
 
       <TodoContent onEdit={onEdit} />
