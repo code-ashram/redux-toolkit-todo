@@ -7,6 +7,7 @@ import ItemDropdown from './parts/ItemDropdown.tsx'
 import {deleteTask, changeStatus} from '../../../../store/todoSlice.ts'
 
 import Todo from '../../../../models/Todo.ts'
+import { convertTodoDate } from '../../../../utils/utils.ts'
 
 type Props = {
   todo: Todo
@@ -33,7 +34,11 @@ const ListItem: FC<Props> = ({ todo, onEdit }) => {
           </Checkbox>
         </div>
 
-        <div>
+        <div className="flex items-center gap-4">
+          <p>
+            {convertTodoDate(todo.creationTime)}
+          </p>
+
           <ItemDropdown onEdit={onEdit} onDelete={() => onDeleteTodo(todo.id)} />
         </div>
       </CardBody>

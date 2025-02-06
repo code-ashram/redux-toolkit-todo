@@ -1,6 +1,7 @@
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from '@heroui/react'
 import { DeleteDocumentIcon, EditDocumentIcon } from '../../../../../assets'
 import { FC } from 'react'
+import ThreeDots from '../../../../../assets/ThreeDots.tsx'
 
 type Props = {
   onEdit: () => void
@@ -10,7 +11,11 @@ type Props = {
 const ItemDropdown: FC<Props> = ({ onEdit, onDelete }) => (
   <Dropdown placement="bottom-end">
     <DropdownTrigger>
-      <Button size="sm" variant="bordered">...</Button>
+      <Button isIconOnly size="sm" variant="bordered">
+        <span className="rotate-90">
+          <ThreeDots />
+        </span>
+      </Button>
     </DropdownTrigger>
 
     <DropdownMenu aria-label="Dropdown menu with icons" variant="faded">
