@@ -5,14 +5,14 @@ const mockData: Todo[] = [
     id: '1',
     title: 'Write a markup',
     isDone: true,
-    creationTime: '2025-01-19T10:00:00.000Z',
+    creationTime: '2025-01-01T10:00:00.000Z',
     priority: 'High'
   },
   {
     id: '2',
     title: 'Make the components',
     isDone: true,
-    creationTime: '2025-01-19T11:00:00.000Z',
+    creationTime: '2025-01-02T11:00:00.000Z',
     priority: 'Mid'
   },
   {
@@ -47,14 +47,14 @@ const mockData: Todo[] = [
     id: '7',
     title: 'Write to Kishor',
     isDone: true,
-    creationTime: '2025-01-22T16:34:00.000Z',
+    creationTime: '2025-02-06T16:34:00.000Z',
     priority: 'High'
   },
   {
     id: '8',
     title: 'Make a refactoring again',
     isDone: false,
-    creationTime: '2025-01-23T17:20:00.000Z',
+    creationTime: '2025-02-07T17:20:00.000Z',
     priority: 'Mid'
   }
 ]

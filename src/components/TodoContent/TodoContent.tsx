@@ -13,12 +13,15 @@ import FirstDateIco from '../../assets/FirstDateIco'
 import Status from '../../models/Status.ts'
 import AscendingIcon from '../../assets/AscendingIcon.tsx'
 import LastDateIco from '../../assets/LastDateIco.tsx'
+import { timePeriod } from '../../utils/utils.ts'
 
 type Props = {
   onEdit: (todo: Todo) => void
+  onChange: (period: Period) => void
+  period: Period
 }
 
-const TodoContent: FC<Props> = ({ onEdit }) => {
+const TodoContent: FC<Props> = ({ period, onEdit, onChange }) => {
   const [orderDirection, setOrderDirection] = useState<Order>(Order.Date_Descending)
   const [orderMode, setOrderMode] = useState<boolean>(true)
 
@@ -52,14 +55,15 @@ const TodoContent: FC<Props> = ({ onEdit }) => {
         </Button>
 
         <Select
-          key="period"
           className="max-w-xs w-[150px]"
           color="default"
-          defaultSelectedKeys={[Period.All]}
+          defaultSelectedKeys={[String(Period.All)]}
           placeholder="Select a period"
         >
-          {Object.values(Period).map((period) =>
-            <SelectItem key={period}>{period}</SelectItem>)
+          {timePeriod.map((period) =>
+            <SelectItem key={period.key} onPress={() => onChange(period.key)}>
+              {period.value}
+            </SelectItem>)
           }
         </Select>
       </div>
@@ -67,7 +71,7 @@ const TodoContent: FC<Props> = ({ onEdit }) => {
       <Tabs aria-label="Options" size="lg">
         {Object.values(Status).map((status) =>
           <Tab key={status} title={status}>
-            <List status={status} orderDirection={orderDirection} onEdit={onEdit} />
+            <List status={status} period={period} orderDirection={orderDirection} onEdit={onEdit} />
           </Tab>
         )}
       </Tabs>

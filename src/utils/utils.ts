@@ -1,4 +1,5 @@
 import Todo from '../models/Todo.ts'
+import Period from '../models/Period.ts'
 
 export const sortListByLastDate = (list: Todo[]): Todo[] =>
   list.sort((a: Todo, b: Todo) =>
@@ -38,3 +39,8 @@ export const convertTodoDate = (todoDate: string): string =>
     }
   )
 
+export const timePeriod = [
+  {key: Period.All, value: 'All the time'},
+  {key: Period.LastMonth, value: 'Last month'},
+  {key: Period.LastWeek, value: 'Last week'},
+]

@@ -6,10 +6,13 @@ import TodoForm from './components/TodoForm'
 
 import Todo from './models/Todo.ts'
 
+import Period from './models/Period.ts'
+
 import './App.scss'
 
 export const App: FC = () => {
   const [selectedTask, setSelectedTask] = useState<Todo | Partial<Todo> | null>(null)
+  const [period, setPeriod] = useState<Period>(Period.All)
 
   const onEdit = (todo: Todo) => {
     setSelectedTask(todo)
@@ -17,6 +20,10 @@ export const App: FC = () => {
 
   const handleClose = () => {
     setSelectedTask(null)
+  }
+
+  const handleChangePeriod = (period: Period) => {
+    setPeriod(period)
   }
 
   return (
@@ -27,7 +34,7 @@ export const App: FC = () => {
         <TodoForm task={selectedTask} onClose={handleClose} />
       )}
 
-      <TodoContent onEdit={onEdit} />
+      <TodoContent period={period} onEdit={onEdit} onChange={handleChangePeriod}/>
     </>
   )
 }

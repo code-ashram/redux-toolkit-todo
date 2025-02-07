@@ -1,9 +1,14 @@
 import { FC, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 
-import ListItem from './parts/ListItem/ListItem.tsx'
-import Todo from '../../models/Todo.ts'
 import { RootState } from '../../store/todoStore.ts'
+
+import ListItem from './parts/ListItem/ListItem.tsx'
+import EmptyListItem from './parts/EmptyListItem.tsx'
+
+import Todo from '../../models/Todo.ts'
+import Status from '../../models/Status.ts'
+import Period from '../../models/Period.ts'
 import { Order } from '../../models/Order.ts'
 import {
   sortListByAscendingTitle,
@@ -11,30 +16,39 @@ import {
   sortListByFirstDate,
   sortListByLastDate
 } from '../../utils/utils.ts'
-import EmptyListItem from './parts/EmptyListItem.tsx'
-import Status from '../../models/Status.ts'
 
 type Props = {
   status: Status
+  period: Period
   orderDirection: Order
   onEdit: (todo: Todo) => void
 }
 
-const List: FC<Props> = ({ status, orderDirection, onEdit }) => {
+const List: FC<Props> = ({ status, period, orderDirection, onEdit }) => {
   const { tasks } = useSelector((state: RootState) => state)
 
-  const filteredTasks: Todo[] = useMemo(() => {
-    {
+  const filteredTasks: Todo[] = useMemo(() => tasks
+    .filter((todo) => {
+      let isVisible: boolean
+
+      const isAvailable: boolean = period === Period.All
+        ? true
+        : new Date(todo.creationTime) > new Date(new Date().setDate(new Date().getDate() - period))
+
       switch (status) {
         case Status.Completed:
-          return tasks.filter((listItem) => listItem.isDone)
+          isVisible = todo.isDone
+          break
         case Status.Active:
-          return tasks.filter((listItem) => !listItem.isDone)
+          isVisible = !todo.isDone
+          break
         default:
-          return tasks.map((listItem) => listItem)
+          isVisible = true
       }
-    }
-  }, [tasks, status])
+
+      return isVisible && isAvailable
+
+    }), [period, status, tasks])
 
   switch (orderDirection) {
     case Order.Date_Ascending:
