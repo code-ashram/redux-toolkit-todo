@@ -22,9 +22,10 @@ type Props = {
   period: Period
   orderDirection: Order
   onEdit: (todo: Todo) => void
+  search: string
 }
 
-const List: FC<Props> = ({ status, period, orderDirection, onEdit }) => {
+const List: FC<Props> = ({ status, period, search, orderDirection, onEdit }) => {
   const { tasks } = useSelector((state: RootState) => state)
 
   const filteredTasks: Todo[] = useMemo(() => tasks
@@ -46,9 +47,9 @@ const List: FC<Props> = ({ status, period, orderDirection, onEdit }) => {
           isVisible = true
       }
 
-      return isVisible && isAvailable
+      return isVisible && isAvailable && todo.title.toLowerCase().includes(search.toLowerCase())
 
-    }), [period, status, tasks])
+    }), [period, search, status, tasks])
 
   switch (orderDirection) {
     case Order.Date_Ascending:

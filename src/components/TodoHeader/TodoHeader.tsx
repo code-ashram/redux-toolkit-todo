@@ -11,9 +11,10 @@ import { AddIcon, Logo, SearchIcon } from '../../assets'
 type Props = {
   task: Todo | Partial<Todo> | null
   onSelect: (task: Todo | Partial<Todo> | null) => void
+  onSearch: (search: string) => void
 }
 
-const TodoHeader: FC<Props> = ({ onSelect }) => {
+const TodoHeader: FC<Props> = ({ onSelect, onSearch }) => {
   const handleCreateTodo = () => {
     onSelect(INITIAL_FIELDS)
   }
@@ -46,6 +47,7 @@ const TodoHeader: FC<Props> = ({ onSelect }) => {
             inputWrapper:
               'h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20'
           }}
+          onChange={(e) => onSearch(e.target.value)}
           placeholder="Type to search..."
           size="sm"
           startContent={<SearchIcon size={18} />}

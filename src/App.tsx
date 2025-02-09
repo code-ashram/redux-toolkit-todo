@@ -13,14 +13,19 @@ import './App.scss'
 export const App: FC = () => {
   const [selectedTask, setSelectedTask] = useState<Todo | Partial<Todo> | null>(null)
   const [period, setPeriod] = useState<Period>(Period.All)
+  const [search, setSearch] = useState<string>('')
 
   const onEdit = (todo: Todo) => {
     setSelectedTask(todo)
   }
 
-  const handleClose = () => {
+  const onClose = () => {
     setSelectedTask(null)
   }
+
+  // const onSearch = () => {
+  //   setSearch()
+  // }
 
   const handleChangePeriod = (period: Period) => {
     setPeriod(period)
@@ -28,13 +33,13 @@ export const App: FC = () => {
 
   return (
     <>
-      <TodoHeader task={selectedTask} onSelect={setSelectedTask} />
+      <TodoHeader task={selectedTask} onSelect={setSelectedTask} onSearch={(e) => setSearch(e)} />
 
       {selectedTask && (
-        <TodoForm task={selectedTask} onClose={handleClose} />
+        <TodoForm task={selectedTask} onClose={onClose} />
       )}
 
-      <TodoContent period={period} onEdit={onEdit} onChange={handleChangePeriod}/>
+      <TodoContent period={period} search={search} onEdit={onEdit} onChange={handleChangePeriod}/>
     </>
   )
 }

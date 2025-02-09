@@ -19,9 +19,10 @@ type Props = {
   onEdit: (todo: Todo) => void
   onChange: (period: Period) => void
   period: Period
+  search: string
 }
 
-const TodoContent: FC<Props> = ({ period, onEdit, onChange }) => {
+const TodoContent: FC<Props> = ({ period, search, onEdit, onChange }) => {
   const [orderDirection, setOrderDirection] = useState<Order>(Order.Date_Descending)
   const [orderMode, setOrderMode] = useState<boolean>(true)
 
@@ -71,7 +72,7 @@ const TodoContent: FC<Props> = ({ period, onEdit, onChange }) => {
       <Tabs aria-label="Options" size="lg">
         {Object.values(Status).map((status) =>
           <Tab key={status} title={status}>
-            <List status={status} period={period} orderDirection={orderDirection} onEdit={onEdit} />
+            <List status={status} period={period} search={search} orderDirection={orderDirection} onEdit={onEdit} />
           </Tab>
         )}
       </Tabs>
