@@ -39,7 +39,11 @@ const TodoContent: FC<Props> = ({ period, search, onEdit, onChange }) => {
   return (
     <div className="relative flex px-6 w-full flex-col">
       <div className="absolute top-[2px] right-[26px] flex items-center justify-center gap-4 z-10">
-        <Button aria-label="Sort by ascending" variant="faded" onPress={handleToggleOrderByDate}>
+        <Button className="bg-[#27272a]"
+                aria-label="Sort by ascending"
+                variant="solid"
+                isIconOnly
+                onPress={handleToggleOrderByDate}>
           {
             orderDirection === Order.Date_Descending
               ? <LastDateIco />
@@ -47,7 +51,11 @@ const TodoContent: FC<Props> = ({ period, search, onEdit, onChange }) => {
           }
         </Button>
 
-        <Button aria-label="Sort by ascending" variant="faded" onPress={handleToggleOrderByTitle}>
+        <Button className="bg-[#27272a]"
+                aria-label="Sort by ascending"
+                variant="solid"
+                isIconOnly
+                onPress={handleToggleOrderByTitle}>
           {
             orderDirection === Order.Title_Descending
               ? <AscendingIcon />

@@ -11,7 +11,7 @@ type Props = {
 const ItemDropdown: FC<Props> = ({ onEdit, onDelete }) => (
   <Dropdown placement="bottom-end">
     <DropdownTrigger>
-      <Button isIconOnly size="sm" variant="bordered">
+      <Button isIconOnly size="sm" variant="light">
         <span className="rotate-90">
           <ThreeDots />
         </span>

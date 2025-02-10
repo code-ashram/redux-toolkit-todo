@@ -30,13 +30,7 @@ const TodoHeader: FC<Props> = ({ onSelect, onSearch }) => {
         </NavbarBrand>
       </NavbarContent>
 
-      <NavbarContent justify="center">
-        <Button className="w-[100px]" color="primary" variant="shadow" onPress={handleCreateTodo}>
-          <AddIcon />
-        </Button>
-      </NavbarContent>
-
-      <NavbarContent as="div" className="items-center" justify="end">
+      <NavbarContent as="div" className="items-center" justify="center">
         <ThemeSwitcher />
 
         <Input
@@ -53,6 +47,12 @@ const TodoHeader: FC<Props> = ({ onSelect, onSearch }) => {
           startContent={<SearchIcon size={18} />}
           type="search"
         />
+      </NavbarContent>
+
+      <NavbarContent justify="end">
+        <Button className="p-3 w-[70px]" isIconOnly color="primary" variant="shadow" onPress={handleCreateTodo}>
+          <AddIcon />
+        </Button>
       </NavbarContent>
     </Navbar>
   )

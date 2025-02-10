@@ -1,7 +1,7 @@
 import { FC } from 'react'
 
 const AscendingIcon: FC = () => (
-  <svg fill="#ffffff" height="50px" width="50px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+  <svg fill="#ffffff" height="25px" width="25px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
        viewBox="0 0 413.156 413.156">
 
     <g id="SVGRepo_bgCarrier" strokeWidth="0" />

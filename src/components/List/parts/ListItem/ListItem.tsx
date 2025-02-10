@@ -8,6 +8,7 @@ import {deleteTask, changeStatus} from '../../../../store/todoSlice.ts'
 
 import Todo from '../../../../models/Todo.ts'
 import { convertTodoDate } from '../../../../utils/utils.ts'
+import PriorityIcon from '../../../../assets/PriorityIcon.tsx'
 
 type Props = {
   todo: Todo
@@ -35,7 +36,9 @@ const ListItem: FC<Props> = ({ todo, onEdit }) => {
         </div>
 
         <div className="flex items-center gap-4">
-          <p>
+          <PriorityIcon priority={todo.priority}/>
+
+          <p className="w-[230px]">
             {convertTodoDate(todo.creationTime)}
           </p>
 
