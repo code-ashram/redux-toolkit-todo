@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import Todo from '../models/Todo.ts'
 import mockData from '../api/mockData.ts'
 
-export interface TodoListState {
+interface TodoListState {
   tasks: Todo[]
 }
 

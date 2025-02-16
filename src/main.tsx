@@ -5,14 +5,14 @@ import { HeroUIProvider } from '@heroui/react'
 
 import App from './App.tsx'
 
-import todoStore from './store/todoStore.ts'
+import store from './store/store.ts'
 
 import './index.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <HeroUIProvider>
-      <Provider store={todoStore}>
+      <Provider store={store}>
         <App />
       </Provider>
     </HeroUIProvider>

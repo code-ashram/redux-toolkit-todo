@@ -1,10 +1,11 @@
 import { FC, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { Button, Select, SelectItem, Tab, Tabs } from '@heroui/react'
+import { changeStatus } from '../../store/statusSlice.tsx'
 
 import List from '../List/List.tsx'
 
 import Todo from '../../models/Todo.ts'
-
 import Period from '../../models/Period.ts'
 import Order from '../../models/Order.ts'
 
@@ -23,6 +24,7 @@ type Props = {
 }
 
 const TodoContent: FC<Props> = ({ period, search, onEdit, onChange }) => {
+  const dispatch = useDispatch()
   const [orderDirection, setOrderDirection] = useState<Order>(Order.Date_Descending)
   const [orderMode, setOrderMode] = useState<boolean>(true)
 
@@ -34,6 +36,10 @@ const TodoContent: FC<Props> = ({ period, search, onEdit, onChange }) => {
   const handleToggleOrderByTitle = () => {
     setOrderMode(prevOrderMode => !prevOrderMode)
     setOrderDirection(orderMode ? Order.Title_Ascending : Order.Title_Descending)
+  }
+
+  const handleChangeStatus = (status: Status) => {
+    dispatch(changeStatus(status))
   }
 
   return (
@@ -75,10 +81,11 @@ const TodoContent: FC<Props> = ({ period, search, onEdit, onChange }) => {
         </Select>
       </div>
 
-      <Tabs aria-label="Options" size="lg">
+      <Tabs aria-label="Options" size="lg" onSelectionChange={(e) => handleChangeStatus(e as Status)}>
         {Object.values(Status).map((status) =>
           <Tab key={status} title={status}>
-            <List status={status} period={period} search={search} orderDirection={orderDirection} onEdit={onEdit} />
+            <List period={period} search={search} orderDirection={orderDirection}
+                  onEdit={onEdit} />
           </Tab>
         )}
       </Tabs>

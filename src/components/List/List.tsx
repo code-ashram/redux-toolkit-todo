@@ -1,7 +1,7 @@
 import { FC, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 
-import { RootState } from '../../store/todoStore.ts'
+import { RootState } from '../../store/store.ts'
 
 import ListItem from './parts/ListItem/ListItem.tsx'
 import EmptyListItem from './parts/EmptyListItem.tsx'
@@ -18,15 +18,15 @@ import {
 } from '../../utils/utils.ts'
 
 type Props = {
-  status: Status
   period: Period
   orderDirection: Order
   onEdit: (todo: Todo) => void
   search: string
 }
 
-const List: FC<Props> = ({ status, period, search, orderDirection, onEdit }) => {
-  const { tasks } = useSelector((state: RootState) => state)
+const List: FC<Props> = ({ period, search, orderDirection, onEdit }) => {
+  const { tasks } = useSelector((state: RootState) => state.tasks)
+  const { status } = useSelector((state: RootState) => state.status)
 
   const filteredTasks: Todo[] = useMemo(() => tasks
     .filter((todo) => {
