@@ -20,5 +20,6 @@ const statusSlice = createSlice({
 })
 
 export const { changeStatus } = statusSlice.actions
+
 export default statusSlice.reducer
 

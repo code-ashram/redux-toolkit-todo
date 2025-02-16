@@ -18,15 +18,15 @@ import {
 } from '../../utils/utils.ts'
 
 type Props = {
-  period: Period
   orderDirection: Order
   onEdit: (todo: Todo) => void
-  search: string
 }
 
-const List: FC<Props> = ({ period, search, orderDirection, onEdit }) => {
+const List: FC<Props> = ({ orderDirection, onEdit }) => {
   const { tasks } = useSelector((state: RootState) => state.tasks)
   const { status } = useSelector((state: RootState) => state.status)
+  const { period } = useSelector((state: RootState) => state.period)
+  const { search } = useSelector((state: RootState) => state.search)
 
   const filteredTasks: Todo[] = useMemo(() => tasks
     .filter((todo) => {

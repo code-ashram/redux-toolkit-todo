@@ -1,7 +1,8 @@
 import { FC, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Button, Select, SelectItem, Tab, Tabs } from '@heroui/react'
-import { changeStatus } from '../../store/statusSlice.tsx'
+import { changeStatus } from '../../store/statusSlice.ts'
+import { changePeriod } from '../../store/periodSlice.ts'
 
 import List from '../List/List.tsx'
 
@@ -18,12 +19,9 @@ import { timePeriod } from '../../utils/utils.ts'
 
 type Props = {
   onEdit: (todo: Todo) => void
-  onChange: (period: Period) => void
-  period: Period
-  search: string
 }
 
-const TodoContent: FC<Props> = ({ period, search, onEdit, onChange }) => {
+const TodoContent: FC<Props> = ({ onEdit }) => {
   const dispatch = useDispatch()
   const [orderDirection, setOrderDirection] = useState<Order>(Order.Date_Descending)
   const [orderMode, setOrderMode] = useState<boolean>(true)
@@ -40,6 +38,10 @@ const TodoContent: FC<Props> = ({ period, search, onEdit, onChange }) => {
 
   const handleChangeStatus = (status: Status) => {
     dispatch(changeStatus(status))
+  }
+
+  const handleChangePeriod = (period: Period) => {
+    dispatch(changePeriod(period))
   }
 
   return (
@@ -74,7 +76,7 @@ const TodoContent: FC<Props> = ({ period, search, onEdit, onChange }) => {
           placeholder="Select a period"
         >
           {timePeriod.map((period) =>
-            <SelectItem key={period.key} onPress={() => onChange(period.key)}>
+            <SelectItem key={period.key} onPress={() =>handleChangePeriod(period.key)}>
               {period.value}
             </SelectItem>)
           }
@@ -84,8 +86,7 @@ const TodoContent: FC<Props> = ({ period, search, onEdit, onChange }) => {
       <Tabs aria-label="Options" size="lg" onSelectionChange={(e) => handleChangeStatus(e as Status)}>
         {Object.values(Status).map((status) =>
           <Tab key={status} title={status}>
-            <List period={period} search={search} orderDirection={orderDirection}
-                  onEdit={onEdit} />
+            <List orderDirection={orderDirection} onEdit={onEdit} />
           </Tab>
         )}
       </Tabs>
