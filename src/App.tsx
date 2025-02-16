@@ -23,10 +23,6 @@ export const App: FC = () => {
     setSelectedTask(null)
   }
 
-  // const onSearch = () => {
-  //   setSearch()
-  // }
-
   const handleChangePeriod = (period: Period) => {
     setPeriod(period)
   }

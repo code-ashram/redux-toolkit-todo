@@ -10,9 +10,9 @@ import Order from '../../models/Order.ts'
 
 import DescendingIcon from '../../assets/DescendingIcon'
 import FirstDateIco from '../../assets/FirstDateIco'
-import Status from '../../models/Status.ts'
 import AscendingIcon from '../../assets/AscendingIcon.tsx'
 import LastDateIco from '../../assets/LastDateIco.tsx'
+import Status from '../../models/Status.ts'
 import { timePeriod } from '../../utils/utils.ts'
 
 type Props = {
@@ -39,8 +39,7 @@ const TodoContent: FC<Props> = ({ period, search, onEdit, onChange }) => {
   return (
     <div className="relative flex px-6 w-full flex-col">
       <div className="absolute top-[2px] right-[26px] flex items-center justify-center gap-4 z-10">
-        <Button className="bg-[#27272a]"
-                aria-label="Sort by ascending"
+        <Button aria-label="Sort by ascending"
                 variant="solid"
                 isIconOnly
                 onPress={handleToggleOrderByDate}>
@@ -51,8 +50,7 @@ const TodoContent: FC<Props> = ({ period, search, onEdit, onChange }) => {
           }
         </Button>
 
-        <Button className="bg-[#27272a]"
-                aria-label="Sort by ascending"
+        <Button aria-label="Sort by ascending"
                 variant="solid"
                 isIconOnly
                 onPress={handleToggleOrderByTitle}>

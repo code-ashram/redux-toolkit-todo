@@ -37,7 +37,7 @@ const TodoForm: FC<Props> = ({ task, onClose }) => {
     e.preventDefault()
     dispatch(task.id ? updateTask(todo as Todo) : createTask({
       title: todo.title || '',
-      priority: todo.priority || ''
+      priority: todo.priority as Priority
     }))
     onClose()
   }
@@ -62,7 +62,9 @@ const TodoForm: FC<Props> = ({ task, onClose }) => {
           onReset={onClose}
           onSubmit={handleSubmitTodo}
         >
-          <ModalHeader className="flex flex-col gap-1">Add new task</ModalHeader>
+          <ModalHeader className="flex flex-col gap-1">
+            {task.id ? 'Edit task' : 'Add new task'}
+          </ModalHeader>
 
           <ModalBody className="w-full">
             <Input
@@ -79,8 +81,8 @@ const TodoForm: FC<Props> = ({ task, onClose }) => {
               label="Priority"
               placeholder="Select task priority"
               defaultSelectedKeys={[Priority.Mid]}
-              value={todo?.priority}
-              onChange={(e) => handleChangeTodo({ priority: e.target.value })}
+              value={todo.priority}
+              onChange={(e) => handleChangeTodo({ priority: e.target.value as Priority})}
             >
               {
                 Object.values(Priority).map((priority) => (
@@ -96,7 +98,7 @@ const TodoForm: FC<Props> = ({ task, onClose }) => {
             </Button>
 
             <Button type="submit" isDisabled={!todo.title?.trim()} color="primary">
-              Add
+              {task.id ? 'Edit' : 'Add'}
             </Button>
           </ModalFooter>
         </Form>
