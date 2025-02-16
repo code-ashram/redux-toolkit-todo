@@ -5,10 +5,14 @@ import mockData from '../api/mockData.ts'
 
 interface TodoListState {
   tasks: Todo[]
+  search: string
+  selectedTask: Todo | Partial<Todo> | null
 }
 
 const initialState: TodoListState = {
-  tasks: mockData
+  tasks: mockData,
+  search: '',
+  selectedTask: null,
 }
 
 const todoSlice = createSlice({
@@ -16,7 +20,7 @@ const todoSlice = createSlice({
   initialState,
   reducers: {
     createTask: (state, { payload }: PayloadAction<Omit<Todo, 'id' | 'creationTime' | 'isDone'>>) => {
-      state.tasks.push({
+      state.tasks.unshift({
         id: crypto.randomUUID(),
         isDone: false,
         title: payload.title.trim(),
@@ -37,10 +41,24 @@ const todoSlice = createSlice({
         todo.title = payload.title
         todo.priority = payload.priority
       }
+    },
+    findTodo(state, action) {
+      state.search = action.payload
+    },
+    selectTask(state, action) {
+      state.selectedTask = action.payload
     }
+  },
+  selectors: {
+    search: (state) => state.search,
+    todos: (state) => state.tasks.filter((todo) =>
+      todo.title.toLowerCase().includes(state.search.toLowerCase())),
+    selectedTodo: (state) => state.selectedTask
   }
 })
 
-export const { createTask, deleteTask, changeStatus, updateTask } = todoSlice.actions
+export const { createTask, deleteTask, changeStatus, updateTask, findTodo, selectTask } = todoSlice.actions
+
+export const { search, todos, selectedTodo } = todoSlice.selectors
 
 export default todoSlice.reducer

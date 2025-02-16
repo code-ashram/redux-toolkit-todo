@@ -4,23 +4,17 @@ import { Button, Input, Navbar, NavbarBrand, NavbarContent } from '@heroui/react
 
 import ThemeSwitcher from '../ThemeSwitcher'
 
-import { findTodo } from '../../store/searchSlice.ts'
+import { findTodo, selectTask } from '../../store/todoSlice.ts'
 
-import Todo from '../../models/Todo.ts'
 import { INITIAL_FIELDS } from '../TodoForm/constants.ts'
 
 import { AddIcon, Logo, SearchIcon } from '../../assets'
 
-type Props = {
-  task: Todo | Partial<Todo> | null
-  onSelect: (task: Todo | Partial<Todo> | null) => void
-}
-
-const TodoHeader: FC<Props> = ({ onSelect }) => {
+const TodoHeader: FC = () => {
   const dispatch = useDispatch()
 
   const handleCreateTodo = () => {
-    onSelect(INITIAL_FIELDS)
+    dispatch(selectTask(INITIAL_FIELDS))
   }
 
   const handleFindTodo = (todoTitle: string) => {

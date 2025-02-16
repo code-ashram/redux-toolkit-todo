@@ -1,33 +1,31 @@
-import { FC, useState } from 'react'
+import { FC } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 import TodoHeader from './components/TodoHeader'
 import TodoContent from './components/TodoContent'
 import TodoForm from './components/TodoForm'
 
-import Todo from './models/Todo.ts'
+import { selectedTodo, selectTask } from './store/todoSlice.ts'
 
 import './App.scss'
 
 export const App: FC = () => {
-  const [selectedTask, setSelectedTask] = useState<Todo | Partial<Todo> | null>(null)
-
-  const onEdit = (todo: Todo) => {
-    setSelectedTask(todo)
-  }
+  const dispatch = useDispatch()
+  const selectedTask = useSelector(selectedTodo)
 
   const onClose = () => {
-    setSelectedTask(null)
+    dispatch(selectTask(null))
   }
 
   return (
     <>
-      <TodoHeader task={selectedTask} onSelect={setSelectedTask} />
+      <TodoHeader />
 
       {selectedTask && (
         <TodoForm task={selectedTask} onClose={onClose} />
       )}
 
-      <TodoContent onEdit={onEdit} />
+      <TodoContent />
     </>
   )
 }

@@ -16,13 +16,16 @@ import AscendingIcon from '../../assets/AscendingIcon.tsx'
 import LastDateIco from '../../assets/LastDateIco.tsx'
 import Status from '../../models/Status.ts'
 import { timePeriod } from '../../utils/utils.ts'
+import { selectTask } from '../../store/todoSlice.ts'
 
-type Props = {
-  onEdit: (todo: Todo) => void
-}
 
-const TodoContent: FC<Props> = ({ onEdit }) => {
+const TodoContent: FC = () => {
   const dispatch = useDispatch()
+
+  const onEdit = (todo: Todo) => {
+    dispatch(selectTask(todo))
+  }
+
   const [orderDirection, setOrderDirection] = useState<Order>(Order.Date_Descending)
   const [orderMode, setOrderMode] = useState<boolean>(true)
 
