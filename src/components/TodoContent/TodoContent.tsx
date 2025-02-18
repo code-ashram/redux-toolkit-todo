@@ -1,7 +1,7 @@
 import { FC, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Button, Select, SelectItem, Tab, Tabs } from '@heroui/react'
-import { changeStatus } from '../../store/statusSlice.ts'
+import { sortByStatus } from  '../../store/todoSlice.ts'
 import { changePeriod } from '../../store/periodSlice.ts'
 
 import List from '../List/List.tsx'
@@ -16,11 +16,14 @@ import AscendingIcon from '../../assets/AscendingIcon.tsx'
 import LastDateIco from '../../assets/LastDateIco.tsx'
 import Status from '../../models/Status.ts'
 import { timePeriod } from '../../utils/utils.ts'
-import { selectTask } from '../../store/todoSlice.ts'
+import { selectTask, status } from '../../store/todoSlice.ts'
 
 
 const TodoContent: FC = () => {
   const dispatch = useDispatch()
+  const chosenStatus = useSelector(status)
+
+  console.log(chosenStatus)
 
   const onEdit = (todo: Todo) => {
     dispatch(selectTask(todo))
@@ -40,7 +43,7 @@ const TodoContent: FC = () => {
   }
 
   const handleChangeStatus = (status: Status) => {
-    dispatch(changeStatus(status))
+    dispatch(sortByStatus(status))
   }
 
   const handleChangePeriod = (period: Period) => {

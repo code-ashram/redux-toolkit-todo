@@ -2,17 +2,20 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import Todo from '../models/Todo.ts'
 import mockData from '../api/mockData.ts'
+import Status from '../models/Status.ts'
 
 interface TodoListState {
   tasks: Todo[]
   search: string
   selectedTask: Todo | Partial<Todo> | null
+  status: Status
 }
 
 const initialState: TodoListState = {
   tasks: mockData,
   search: '',
   selectedTask: null,
+  status: Status.All
 }
 
 const todoSlice = createSlice({
@@ -47,18 +50,22 @@ const todoSlice = createSlice({
     },
     selectTask(state, action) {
       state.selectedTask = action.payload
+    },
+    sortByStatus: (state, action) => {
+      state.status = action.payload
     }
   },
   selectors: {
     search: (state) => state.search,
     todos: (state) => state.tasks.filter((todo) =>
       todo.title.toLowerCase().includes(state.search.toLowerCase())),
-    selectedTodo: (state) => state.selectedTask
+    selectedTodo: (state) => state.selectedTask,
+    status: (state) => state.status
   }
 })
 
-export const { createTask, deleteTask, changeStatus, updateTask, findTodo, selectTask } = todoSlice.actions
+export const { createTask, deleteTask, changeStatus, updateTask, findTodo, selectTask, sortByStatus } = todoSlice.actions
 
-export const { search, todos, selectedTodo } = todoSlice.selectors
+export const { search, todos, selectedTodo, status } = todoSlice.selectors
 
 export default todoSlice.reducer
