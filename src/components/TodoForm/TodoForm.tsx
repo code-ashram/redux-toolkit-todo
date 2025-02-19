@@ -1,5 +1,5 @@
-import { FC, FormEvent, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { FC, FormEvent } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   Modal,
   ModalContent,
@@ -14,32 +14,30 @@ import {
   useDisclosure
 } from '@heroui/react'
 
-import { createTask, updateTask } from '../../store/todoSlice.ts'
+import { createTask, selectedTodo, selectTask, updateTask } from '../../store/todoSlice.ts'
 
 import { Priority } from '../../models'
 import Todo from '../../models/Todo.ts'
 
-type Props = {
-  task: Todo | Partial<Todo>
-  onClose: () => void
-}
-
-const TodoForm: FC<Props> = ({ task, onClose }) => {
+const TodoForm: FC = () => {
   const dispatch = useDispatch()
-  const [todo, setTodo] = useState<Todo | Partial<Todo>>(task)
+  const selectedTask = useSelector(selectedTodo)
   const { onOpenChange } = useDisclosure()
 
+  const onClose = () => {
+    dispatch(selectTask(null))
+  }
+
   const handleChangeTodo = (payload: Partial<Todo>) => {
-    setTodo((prevTodo) => ({ ...prevTodo, ...payload }))
+    dispatch(selectTask(payload))
   }
 
   const handleSubmitTodo = (e: FormEvent) => {
     e.preventDefault()
-    dispatch(task.id ? updateTask(todo as Todo) : createTask({
-      title: todo.title || '',
-      priority: todo.priority as Priority
+    dispatch(selectedTask?.id ? updateTask() : createTask({
+      title: selectedTask?.title || '',
+      priority: selectedTask?.priority as Priority
     }))
-    onClose()
   }
 
   return (
@@ -53,7 +51,7 @@ const TodoForm: FC<Props> = ({ task, onClose }) => {
         </Button>
       }
       autoFocus
-      isOpen
+      isOpen={!!selectedTask}
     >
       <ModalContent>
         <Form
@@ -63,7 +61,7 @@ const TodoForm: FC<Props> = ({ task, onClose }) => {
           onSubmit={handleSubmitTodo}
         >
           <ModalHeader className="flex flex-col gap-1">
-            {task.id ? 'Edit task' : 'Add new task'}
+            {selectedTask?.id ? 'Edit task' : 'Add new task'}
           </ModalHeader>
 
           <ModalBody className="w-full">
@@ -72,7 +70,7 @@ const TodoForm: FC<Props> = ({ task, onClose }) => {
               size="md"
               label="Title"
               placeholder="Enter your task"
-              value={todo.title}
+              value={selectedTask?.title}
               onChange={(e) => handleChangeTodo({ title: e.target.value })}
               required
             />
@@ -81,8 +79,8 @@ const TodoForm: FC<Props> = ({ task, onClose }) => {
               label="Priority"
               placeholder="Select task priority"
               defaultSelectedKeys={[Priority.Mid]}
-              value={todo.priority}
-              onChange={(e) => handleChangeTodo({ priority: e.target.value as Priority})}
+              value={selectedTask?.priority}
+              onChange={(e) => handleChangeTodo({ priority: e.target.value as Priority })}
             >
               {
                 Object.values(Priority).map((priority) => (
@@ -97,8 +95,8 @@ const TodoForm: FC<Props> = ({ task, onClose }) => {
               Close
             </Button>
 
-            <Button type="submit" isDisabled={!todo.title?.trim()} color="primary">
-              {task.id ? 'Edit' : 'Add'}
+            <Button type="submit" isDisabled={!selectedTask?.title?.trim()} color="primary">
+              {selectedTask?.id ? 'Save' : 'Add'}
             </Button>
           </ModalFooter>
         </Form>

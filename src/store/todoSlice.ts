@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import Todo from '../models/Todo.ts'
 import mockData from '../api/mockData.ts'
 import Status from '../models/Status.ts'
+import { Priority } from '../models'
 
 interface TodoListState {
   tasks: Todo[]
@@ -30,6 +31,7 @@ const todoSlice = createSlice({
         creationTime: new Date().toISOString(),
         priority: payload.priority
       })
+      state.selectedTask = null
     },
     deleteTask: (state, { payload }: PayloadAction<string>) => {
       state.tasks = state.tasks.filter((todo) => todo.id !== payload)
@@ -38,18 +40,26 @@ const todoSlice = createSlice({
       const todo = state.tasks.find((task) => task.id === payload)
       if (todo) todo.isDone = !todo.isDone
     },
-    updateTask: (state, { payload }: PayloadAction<Todo>) => {
-      const todo = state.tasks.find((task) => task.id === payload.id)
-      if (todo) {
-        todo.title = payload.title
-        todo.priority = payload.priority
+    updateTask: (state) => {
+      if (state.selectedTask) {
+        const todo = state.tasks.find((task) =>
+          task.id === state.selectedTask?.id
+        )
+        if (todo) {
+          todo.title = state.selectedTask.title || ''
+          todo.priority = state.selectedTask.priority ?? Priority.Mid
+          state.selectedTask = null
+        }
       }
     },
-    findTodo(state, action) {
+    findTodo (state, action) {
       state.search = action.payload
     },
-    selectTask(state, action) {
-      state.selectedTask = action.payload
+    selectTask (state, { payload }: PayloadAction<Partial<Todo> | null>) {
+      state.selectedTask = {
+        ...state.selectedTask,
+        ...payload
+      }
     },
     sortByStatus: (state, action) => {
       state.status = action.payload
@@ -64,7 +74,15 @@ const todoSlice = createSlice({
   }
 })
 
-export const { createTask, deleteTask, changeStatus, updateTask, findTodo, selectTask, sortByStatus } = todoSlice.actions
+export const {
+  createTask,
+  deleteTask,
+  changeStatus,
+  updateTask,
+  findTodo,
+  selectTask,
+  sortByStatus
+} = todoSlice.actions
 
 export const { search, todos, selectedTodo, status } = todoSlice.selectors
 
