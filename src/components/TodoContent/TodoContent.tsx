@@ -1,29 +1,24 @@
 import { FC, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { Button, Select, SelectItem, Tab, Tabs } from '@heroui/react'
-import { sortByStatus } from  '../../store/todoSlice.ts'
-import { changePeriod } from '../../store/periodSlice.ts'
+import { sortByPeriod, sortByStatus } from '../../store/todoSlice.ts'
+import { selectTask } from '../../store/todoSlice.ts'
 
 import List from '../List/List.tsx'
 
 import Todo from '../../models/Todo.ts'
 import Period from '../../models/Period.ts'
 import Order from '../../models/Order.ts'
+import Status from '../../models/Status.ts'
+import { timePeriod } from '../../utils/utils.ts'
 
 import DescendingIcon from '../../assets/DescendingIcon'
 import FirstDateIco from '../../assets/FirstDateIco'
 import AscendingIcon from '../../assets/AscendingIcon.tsx'
 import LastDateIco from '../../assets/LastDateIco.tsx'
-import Status from '../../models/Status.ts'
-import { timePeriod } from '../../utils/utils.ts'
-import { selectTask, status } from '../../store/todoSlice.ts'
-
 
 const TodoContent: FC = () => {
   const dispatch = useDispatch()
-  const chosenStatus = useSelector(status)
-
-  console.log(chosenStatus)
 
   const onEdit = (todo: Todo) => {
     dispatch(selectTask(todo))
@@ -47,7 +42,7 @@ const TodoContent: FC = () => {
   }
 
   const handleChangePeriod = (period: Period) => {
-    dispatch(changePeriod(period))
+    dispatch(sortByPeriod(period))
   }
 
   return (
@@ -82,7 +77,7 @@ const TodoContent: FC = () => {
           placeholder="Select a period"
         >
           {timePeriod.map((period) =>
-            <SelectItem key={period.key} onPress={() =>handleChangePeriod(period.key)}>
+            <SelectItem key={period.key} onPress={() => handleChangePeriod(period.key)}>
               {period.value}
             </SelectItem>)
           }

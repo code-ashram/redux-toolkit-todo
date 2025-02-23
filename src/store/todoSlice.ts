@@ -4,19 +4,22 @@ import Todo from '../models/Todo.ts'
 import mockData from '../api/mockData.ts'
 import Status from '../models/Status.ts'
 import { Priority } from '../models'
+import Period from '../models/Period.ts'
 
 interface TodoListState {
   tasks: Todo[]
   search: string
   selectedTask: Todo | Partial<Todo> | null
   status: Status
+  period: Period
 }
 
 const initialState: TodoListState = {
   tasks: mockData,
   search: '',
   selectedTask: null,
-  status: Status.All
+  status: Status.All,
+  period: Period.All
 }
 
 const todoSlice = createSlice({
@@ -63,14 +66,37 @@ const todoSlice = createSlice({
     },
     sortByStatus: (state, action) => {
       state.status = action.payload
+    },
+    sortByPeriod: (state, action) => {
+      state.period = action.payload
     }
   },
   selectors: {
     search: (state) => state.search,
-    todos: (state) => state.tasks.filter((todo) =>
-      todo.title.toLowerCase().includes(state.search.toLowerCase())),
+    todos: (state) => state.tasks.filter((todo) => {
+        let isVisible: boolean
+
+        const isAvailable: boolean = state.period === Period.All
+          ? true
+          : new Date(todo.creationTime) > new Date(new Date().setDate(new Date().getDate() - state.period))
+
+        switch (state.status) {
+          case Status.Completed:
+            isVisible = todo.isDone
+            break
+          case Status.Active:
+            isVisible = !todo.isDone
+            break
+          default:
+            isVisible = true
+        }
+
+        return isAvailable && isVisible && todo.title.toLowerCase().includes(state.search.toLowerCase())
+      }
+    ),
     selectedTodo: (state) => state.selectedTask,
-    status: (state) => state.status
+    status: (state) => state.status,
+    period: (state) => state.period
   }
 })
 
@@ -81,9 +107,10 @@ export const {
   updateTask,
   findTodo,
   selectTask,
-  sortByStatus
+  sortByStatus,
+  sortByPeriod,
 } = todoSlice.actions
 
-export const { search, todos, selectedTodo, status } = todoSlice.selectors
+export const { search, todos, selectedTodo, status, period } = todoSlice.selectors
 
 export default todoSlice.reducer
