@@ -18,15 +18,15 @@ export const sortListByFirstDate = (list: Todo[]): Todo[] =>
 export const sortListByAscendingTitle = (list: Todo[]): Todo[] =>
   list.sort((a: Todo, b: Todo) =>
     a.title.toLowerCase() < b.title.toLowerCase()
-      ? 1
-      : -1
+      ? -1
+      : 1
   )
 
 export const sortListByDescendingTitle = (list: Todo[]): Todo[] =>
   list.sort((a: Todo, b: Todo) =>
     a.title.toLowerCase() < b.title.toLowerCase()
-      ? -1
-      : 1
+      ? 1
+      : -1
   )
 
 export const convertTodoDate = (todoDate: string): string =>
@@ -40,7 +40,7 @@ export const convertTodoDate = (todoDate: string): string =>
   )
 
 export const timePeriod = [
-  {key: Period.All, value: 'All the time'},
-  {key: Period.LastMonth, value: 'Last month'},
-  {key: Period.LastWeek, value: 'Last week'},
+  { key: Period.All, value: 'All the time' },
+  { key: Period.LastMonth, value: 'Last month' },
+  { key: Period.LastWeek, value: 'Last week' }
 ]

@@ -1,8 +1,8 @@
-import { FC, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { FC } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Button, Select, SelectItem, Tab, Tabs } from '@heroui/react'
-import { sortByPeriod, sortByStatus } from '../../store/todoSlice.ts'
-import { selectTask } from '../../store/todoSlice.ts'
+import { sortByOrder, sortByPeriod, sortByStatus } from '../../store/todoSlice.ts'
+import { selectTask, order } from '../../store/todoSlice.ts'
 
 import List from '../List/List.tsx'
 
@@ -12,29 +12,31 @@ import Order from '../../models/Order.ts'
 import Status from '../../models/Status.ts'
 import { timePeriod } from '../../utils/utils.ts'
 
-import DescendingIcon from '../../assets/DescendingIcon'
 import FirstDateIco from '../../assets/FirstDateIco'
-import AscendingIcon from '../../assets/AscendingIcon.tsx'
+import DescendingIcon from '../../assets/DescendingIcon.tsx'
 import LastDateIco from '../../assets/LastDateIco.tsx'
+import AscendingIcon from '../../assets/AscendingIcon.tsx'
 
 const TodoContent: FC = () => {
   const dispatch = useDispatch()
-
-  const onEdit = (todo: Todo) => {
-    dispatch(selectTask(todo))
-  }
-
-  const [orderDirection, setOrderDirection] = useState<Order>(Order.Date_Descending)
-  const [orderMode, setOrderMode] = useState<boolean>(true)
+  const orderDirection = useSelector(order)
 
   const handleToggleOrderByDate = () => {
-    setOrderMode(prevOrderMode => !prevOrderMode)
-    setOrderDirection(orderMode ? Order.Date_Ascending : Order.Date_Descending)
+    dispatch(sortByOrder(orderDirection === Order.Date_Ascending
+      ? Order.Date_Descending
+      : Order.Date_Ascending
+    ))
   }
 
   const handleToggleOrderByTitle = () => {
-    setOrderMode(prevOrderMode => !prevOrderMode)
-    setOrderDirection(orderMode ? Order.Title_Ascending : Order.Title_Descending)
+    dispatch(sortByOrder(orderDirection === Order.Title_Ascending
+      ? Order.Title_Descending
+      : Order.Title_Ascending
+    ))
+  }
+
+  const onEdit = (todo: Todo) => {
+    dispatch(selectTask(todo))
   }
 
   const handleChangeStatus = (status: Status) => {
@@ -48,25 +50,17 @@ const TodoContent: FC = () => {
   return (
     <div className="relative flex px-6 w-full flex-col">
       <div className="absolute top-[2px] right-[26px] flex items-center justify-center gap-4 z-10">
-        <Button aria-label="Sort by ascending"
-                variant="solid"
-                isIconOnly
-                onPress={handleToggleOrderByDate}>
-          {
-            orderDirection === Order.Date_Descending
-              ? <LastDateIco />
-              : <FirstDateIco />
+        <Button aria-label="Sort by ascending" variant="solid" isIconOnly onPress={handleToggleOrderByDate}>
+          {orderDirection === Order.Date_Ascending
+            ? <FirstDateIco />
+            : <LastDateIco />
           }
         </Button>
 
-        <Button aria-label="Sort by ascending"
-                variant="solid"
-                isIconOnly
-                onPress={handleToggleOrderByTitle}>
-          {
-            orderDirection === Order.Title_Descending
-              ? <AscendingIcon />
-              : <DescendingIcon />
+        <Button aria-label="Sort by ascending" variant="solid" isIconOnly onPress={handleToggleOrderByTitle}>
+          {orderDirection === Order.Title_Ascending
+            ? <AscendingIcon />
+            : <DescendingIcon />
           }
         </Button>
 
@@ -87,7 +81,7 @@ const TodoContent: FC = () => {
       <Tabs aria-label="Options" size="lg" onSelectionChange={(e) => handleChangeStatus(e as Status)}>
         {Object.values(Status).map((status) =>
           <Tab key={status} title={status}>
-            <List orderDirection={orderDirection} onEdit={onEdit} />
+            <List onEdit={onEdit} />
           </Tab>
         )}
       </Tabs>

@@ -1,12 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
 
 import todoReducer from './todoSlice.ts'
-import periodReducer from './periodSlice.ts'
 
 const store = configureStore({
   reducer: {
     tasks: todoReducer,
-    period: periodReducer,
   }
 })
 

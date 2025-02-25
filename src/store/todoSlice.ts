@@ -5,6 +5,7 @@ import mockData from '../api/mockData.ts'
 import Status from '../models/Status.ts'
 import { Priority } from '../models'
 import Period from '../models/Period.ts'
+import Order from '../models/Order.ts'
 
 interface TodoListState {
   tasks: Todo[]
@@ -12,6 +13,7 @@ interface TodoListState {
   selectedTask: Todo | Partial<Todo> | null
   status: Status
   period: Period
+  order: Order
 }
 
 const initialState: TodoListState = {
@@ -19,7 +21,8 @@ const initialState: TodoListState = {
   search: '',
   selectedTask: null,
   status: Status.All,
-  period: Period.All
+  period: Period.All,
+  order: Order.Date_Ascending
 }
 
 const todoSlice = createSlice({
@@ -64,11 +67,14 @@ const todoSlice = createSlice({
         ...payload
       }
     },
-    sortByStatus: (state, action) => {
-      state.status = action.payload
+    sortByStatus: (state, { payload }: PayloadAction<Status>) => {
+      state.status = payload
     },
-    sortByPeriod: (state, action) => {
-      state.period = action.payload
+    sortByPeriod: (state, { payload }: PayloadAction<Period>) => {
+      state.period = payload
+    },
+    sortByOrder: (state, { payload }: PayloadAction<Order>) => {
+      state.order = payload
     }
   },
   selectors: {
@@ -96,7 +102,8 @@ const todoSlice = createSlice({
     ),
     selectedTodo: (state) => state.selectedTask,
     status: (state) => state.status,
-    period: (state) => state.period
+    period: (state) => state.period,
+    order: (state) => state.order
   }
 })
 
@@ -109,8 +116,9 @@ export const {
   selectTask,
   sortByStatus,
   sortByPeriod,
+  sortByOrder
 } = todoSlice.actions
 
-export const { search, todos, selectedTodo, status, period } = todoSlice.selectors
+export const { search, todos, selectedTodo, status, period, order } = todoSlice.selectors
 
 export default todoSlice.reducer
