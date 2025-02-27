@@ -73,9 +73,16 @@ const todoSlice = createSlice({
     sortByPeriod: (state, { payload }: PayloadAction<Period>) => {
       state.period = payload
     },
-    sortByOrder: (state, { payload }: PayloadAction<Order>) => {
-      state.order = payload
-    }
+    toggleOrderByDate: (state) => {
+      state.order = state.order === Order.Date_Ascending
+        ? Order.Date_Descending
+        : Order.Date_Ascending
+    },
+    toggleOrderByTitle: (state) => {
+      state.order = state.order === Order.Title_Ascending
+        ? Order.Title_Descending
+        : Order.Title_Ascending
+    },
   },
   selectors: {
     search: (state) => state.search,
@@ -116,7 +123,8 @@ export const {
   selectTask,
   sortByStatus,
   sortByPeriod,
-  sortByOrder
+  toggleOrderByDate,
+  toggleOrderByTitle,
 } = todoSlice.actions
 
 export const { search, todos, selectedTodo, status, period, order } = todoSlice.selectors

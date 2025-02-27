@@ -1,7 +1,13 @@
 import { FC } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Select, SelectItem, Tab, Tabs } from '@heroui/react'
-import { sortByOrder, sortByPeriod, sortByStatus } from '../../store/todoSlice.ts'
+
+import {
+  sortByPeriod,
+  sortByStatus,
+  toggleOrderByDate,
+  toggleOrderByTitle
+} from '../../store/todoSlice.ts'
 import { selectTask, order } from '../../store/todoSlice.ts'
 
 import List from '../List/List.tsx'
@@ -22,17 +28,11 @@ const TodoContent: FC = () => {
   const orderDirection = useSelector(order)
 
   const handleToggleOrderByDate = () => {
-    dispatch(sortByOrder(orderDirection === Order.Date_Ascending
-      ? Order.Date_Descending
-      : Order.Date_Ascending
-    ))
+    dispatch(toggleOrderByDate())
   }
 
   const handleToggleOrderByTitle = () => {
-    dispatch(sortByOrder(orderDirection === Order.Title_Ascending
-      ? Order.Title_Descending
-      : Order.Title_Ascending
-    ))
+    dispatch(toggleOrderByTitle())
   }
 
   const onEdit = (todo: Todo) => {
