@@ -6,9 +6,11 @@ import Status from '../models/Status.ts'
 import { Priority } from '../models'
 import Period from '../models/Period.ts'
 import Order from '../models/Order.ts'
+import { getTasks } from './todoActions.ts'
 
 interface TodoListState {
   tasks: Todo[]
+  loading: 'idle' | 'pending' | 'succeeded' | 'failed'
   search: string
   selectedTask: Todo | Partial<Todo> | null
   status: Status
@@ -22,7 +24,8 @@ const initialState: TodoListState = {
   selectedTask: null,
   status: Status.All,
   period: Period.All,
-  order: Order.Date_Ascending
+  order: Order.Date_Ascending,
+  loading: 'idle'
 }
 
 const todoSlice = createSlice({
@@ -82,7 +85,7 @@ const todoSlice = createSlice({
       state.order = state.order === Order.Title_Ascending
         ? Order.Title_Descending
         : Order.Title_Ascending
-    },
+    }
   },
   selectors: {
     search: (state) => state.search,
@@ -111,6 +114,11 @@ const todoSlice = createSlice({
     status: (state) => state.status,
     period: (state) => state.period,
     order: (state) => state.order
+  },
+  extraReducers: (builder) => {
+    builder.addCase(getTasks., (state) => {
+      state.tasks
+    })
   }
 })
 
@@ -124,7 +132,7 @@ export const {
   sortByStatus,
   sortByPeriod,
   toggleOrderByDate,
-  toggleOrderByTitle,
+  toggleOrderByTitle
 } = todoSlice.actions
 
 export const { search, todos, selectedTodo, status, period, order } = todoSlice.selectors
