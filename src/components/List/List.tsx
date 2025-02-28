@@ -23,8 +23,6 @@ const List: FC<Props> = ({ onEdit }) => {
   const searchTodo = useSelector(todos)
   const orderDirection = useSelector(order)
 
-  console.log(orderDirection)
-
   switch (orderDirection) {
     case Order.Date_Ascending:
       sortListByFirstDate(searchTodo)
