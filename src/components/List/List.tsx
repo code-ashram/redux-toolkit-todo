@@ -1,5 +1,5 @@
-import { FC } from 'react'
-import { useSelector } from 'react-redux'
+import { FC, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 import ListItem from './parts/ListItem/ListItem.tsx'
 import EmptyListItem from './parts/EmptyListItem.tsx'
@@ -14,6 +14,8 @@ import {
   sortListByFirstDate,
   sortListByLastDate
 } from '../../utils/utils.ts'
+import { AppDispatch } from '../../store/store.ts'
+import { getTasks } from '../../store/todoActions.ts'
 
 type Props = {
   onEdit: (todo: Todo) => void
@@ -22,6 +24,11 @@ type Props = {
 const List: FC<Props> = ({ onEdit }) => {
   const searchTodo = useSelector(todos)
   const orderDirection = useSelector(order)
+  const dispatch = useDispatch<AppDispatch>()
+
+  useEffect(() => {
+    dispatch(getTasks())
+  }, [dispatch])
 
   switch (orderDirection) {
     case Order.Date_Ascending:

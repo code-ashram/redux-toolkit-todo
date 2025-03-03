@@ -1,16 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import Todo from '../models/Todo.ts'
-import mockData from '../api/mockData.ts'
 import Status from '../models/Status.ts'
 import { Priority } from '../models'
 import Period from '../models/Period.ts'
 import Order from '../models/Order.ts'
+
 import { getTasks } from './todoActions.ts'
 
 interface TodoListState {
   tasks: Todo[]
-  loading: 'idle' | 'pending' | 'succeeded' | 'failed'
+  loading: 'pending' | 'succeeded' | 'failed'
   search: string
   selectedTask: Todo | Partial<Todo> | null
   status: Status
@@ -19,14 +19,14 @@ interface TodoListState {
 }
 
 const initialState: TodoListState = {
-  tasks: mockData,
+  tasks: [],
   search: '',
   selectedTask: null,
   status: Status.All,
   period: Period.All,
   order: Order.Date_Ascending,
-  loading: 'idle'
-}
+  loading: 'pending'
+} satisfies TodoListState as TodoListState
 
 const todoSlice = createSlice({
   name: 'tasks',
@@ -116,9 +116,17 @@ const todoSlice = createSlice({
     order: (state) => state.order
   },
   extraReducers: (builder) => {
-    builder.addCase(getTasks., (state) => {
-      state.tasks
-    })
+    builder
+      .addCase(getTasks.pending, (state) => {
+        state.loading = 'pending';
+      })
+      .addCase(getTasks.fulfilled, (state, { payload }) => {
+        state.loading = 'succeeded';
+        state.tasks = payload; // Assuming payload is an array of todos
+      })
+      .addCase(getTasks.rejected, (state) => {
+        state.loading = 'failed';
+      });
   }
 })
 
