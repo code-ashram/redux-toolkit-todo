@@ -6,7 +6,7 @@ import { Priority } from '../models'
 import Period from '../models/Period.ts'
 import Order from '../models/Order.ts'
 
-import { getTasks } from './todoActions.ts'
+import { getTasks, postTask } from './todoActions.ts'
 
 interface TodoListState {
   tasks: Todo[]
@@ -16,6 +16,7 @@ interface TodoListState {
   status: Status
   period: Period
   order: Order
+  error: null | string
 }
 
 const initialState: TodoListState = {
@@ -25,7 +26,8 @@ const initialState: TodoListState = {
   status: Status.All,
   period: Period.All,
   order: Order.Date_Ascending,
-  loading: 'pending'
+  loading: 'pending',
+  error: null
 } satisfies TodoListState as TodoListState
 
 const todoSlice = createSlice({
@@ -65,10 +67,7 @@ const todoSlice = createSlice({
       state.search = action.payload
     },
     selectTask (state, { payload }: PayloadAction<Partial<Todo> | null>) {
-      state.selectedTask = {
-        ...state.selectedTask,
-        ...payload
-      }
+      state.selectedTask = payload
     },
     sortByStatus: (state, { payload }: PayloadAction<Status>) => {
       state.status = payload
@@ -118,15 +117,29 @@ const todoSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getTasks.pending, (state) => {
-        state.loading = 'pending';
+        state.loading = 'pending'
       })
       .addCase(getTasks.fulfilled, (state, { payload }) => {
-        state.loading = 'succeeded';
-        state.tasks = payload; // Assuming payload is an array of todos
+        state.loading = 'succeeded'
+        state.tasks = payload // Assuming payload is an array of todos
       })
       .addCase(getTasks.rejected, (state) => {
-        state.loading = 'failed';
-      });
+        state.loading = 'failed'
+      })
+      .addCase(postTask.pending, (state) => {
+        state.loading = 'pending'
+        state.error = null
+      })
+      .addCase(postTask.fulfilled, (state, action: PayloadAction<Todo>) => {
+        state.loading = 'succeeded'
+        state.tasks.push(action.payload)
+        state.selectedTask = null
+      })
+      .addCase(postTask.rejected, (state, action) => {
+        state.loading = 'failed'
+        state.error = action.payload as string
+      })
+
   }
 })
 

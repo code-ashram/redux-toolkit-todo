@@ -16,7 +16,7 @@ export const getTodo = async (id: string): Promise<Todo> =>
   client.get<Todo>(`/todos/${id}`)
     .then((response) => response.data)
 
-export const createTodo = async (todo: Omit<Todo, 'id'>): Promise<Todo> =>
+export const postTodo = async (todo: Omit<Todo, 'id'>): Promise<Todo> =>
   client.post<Todo>('/todos', todo)
     .then((response) => response.data)
 

@@ -14,15 +14,25 @@ import {
   useDisclosure
 } from '@heroui/react'
 
-import { createTask, selectedTodo, selectTask, updateTask } from '../../store/todoSlice.ts'
+import { selectedTodo, selectTask, updateTask } from '../../store/todoSlice.ts'
 
 import { Priority } from '../../models'
 import Todo from '../../models/Todo.ts'
+import { postTask } from '../../store/todoActions.ts'
+import { AppDispatch } from '../../store/store.ts'
 
 const TodoForm: FC = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
   const selectedTask = useSelector(selectedTodo)
   const { onOpenChange } = useDisclosure()
+
+  const handleSubmitTodo = (e: FormEvent) => {
+    e.preventDefault()
+    dispatch(selectedTask?.id ? updateTask() : postTask({
+      title: selectedTask?.title || '',
+      priority: selectedTask?.priority as Priority
+    }))
+  }
 
   const onClose = () => {
     dispatch(selectTask(null))
@@ -32,13 +42,6 @@ const TodoForm: FC = () => {
     dispatch(selectTask(payload))
   }
 
-  const handleSubmitTodo = (e: FormEvent) => {
-    e.preventDefault()
-    dispatch(selectedTask?.id ? updateTask() : createTask({
-      title: selectedTask?.title || '',
-      priority: selectedTask?.priority as Priority
-    }))
-  }
 
   return (
     <Modal
