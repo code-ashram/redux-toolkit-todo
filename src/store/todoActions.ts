@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { postTodo, getTodos, deleteTodo, patchTodo } from '../api/client.ts'
+import { postTodo, getTodos, deleteTodo, patchTodo, putTodo } from '../api/client.ts'
 import Todo from '../models/Todo.ts'
 
 export const getTasks = createAsyncThunk(
@@ -20,4 +20,9 @@ export const deleteTask = createAsyncThunk<Todo, string>(
 export const patchTask = createAsyncThunk<Todo, { id: string, payload: Partial<Todo> }>(
   'tasks/patchTask',
   ({ id, payload }) => patchTodo(id, payload)
+)
+
+export const putTask = createAsyncThunk<Todo, Todo>(
+  'tasks/putTask',
+  (todo) => putTodo(todo)
 )

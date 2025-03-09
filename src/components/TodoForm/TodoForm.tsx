@@ -14,11 +14,11 @@ import {
   useDisclosure
 } from '@heroui/react'
 
-import { selectedTodo, selectTask, updateTask } from '../../store/todoSlice.ts'
+import { selectedTodo, selectTask } from '../../store/todoSlice.ts'
 
 import { Priority } from '../../models'
 import Todo from '../../models/Todo.ts'
-import { postTask } from '../../store/todoActions.ts'
+import { postTask, putTask } from '../../store/todoActions.ts'
 import { AppDispatch } from '../../store/store.ts'
 
 const TodoForm: FC = () => {
@@ -28,7 +28,7 @@ const TodoForm: FC = () => {
 
   const handleSubmitTodo = (e: FormEvent) => {
     e.preventDefault()
-    dispatch(selectedTask?.id ? updateTask() : postTask({
+    dispatch(selectedTask?.id ? putTask(selectedTask as Todo) : postTask({
       title: selectedTask?.title || '',
       priority: selectedTask?.priority as Priority
     }))

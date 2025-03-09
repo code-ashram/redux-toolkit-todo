@@ -6,7 +6,7 @@ import { Priority } from '../models'
 import Period from '../models/Period.ts'
 import Order from '../models/Order.ts'
 
-import { getTasks, postTask, deleteTask, patchTask } from './todoActions.ts'
+import { getTasks, postTask, deleteTask, patchTask, putTask } from './todoActions.ts'
 
 interface TodoListState {
   tasks: Todo[]
@@ -67,7 +67,7 @@ const todoSlice = createSlice({
       state.search = action.payload
     },
     selectTask (state, { payload }: PayloadAction<Partial<Todo> | null>) {
-      state.selectedTask = payload
+      state.selectedTask = { ...state.selectedTask, ...payload }
     },
     sortByStatus: (state, { payload }: PayloadAction<Status>) => {
       state.status = payload
@@ -160,6 +160,24 @@ const todoSlice = createSlice({
       .addCase(patchTask.rejected, (state) => {
         state.loading = 'failed'
       })
+      .addCase(putTask.pending, (state) => {
+        state.loading = 'pending'
+      })
+      .addCase(putTask.fulfilled, (state) => {
+        state.loading = 'succeeded'
+        const todo = state.tasks.find((task) =>
+          task.id === state.selectedTask?.id
+        )
+        if (todo) {
+          todo.title = state.selectedTask?.title || ''
+          todo.priority = state.selectedTask?.priority ?? Priority.Mid
+        }
+        state.selectedTask = null
+      })
+      .addCase(putTask.rejected, (state) => {
+        state.loading = 'failed'
+      })
+
   }
 })
 
