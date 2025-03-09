@@ -20,7 +20,9 @@ export const postTodo = async (todo: Omit<Todo, 'id'>): Promise<Todo> =>
   client.post<Todo>('/todos', todo)
     .then((response) => response.data)
 
-export const deleteTodo = async (id: string): Promise<void> => client.delete(`/todos/${id}`)
+export const deleteTodo = async (id: string): Promise<Todo> =>
+  client.delete(`/todos/${id}`)
+    .then((response) => response.data)
 
 export const updateTodo = async (todo: Todo): Promise<Todo> =>
   client.put<Todo>(`/todos/${todo.id}`, todo)

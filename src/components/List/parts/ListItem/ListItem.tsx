@@ -4,11 +4,11 @@ import { Card, CardBody, Checkbox } from '@heroui/react'
 
 import ItemDropdown from './parts/ItemDropdown.tsx'
 
-import {deleteTask, changeStatus} from '../../../../store/todoSlice.ts'
-
 import Todo from '../../../../models/Todo.ts'
 import { convertTodoDate } from '../../../../utils/utils.ts'
 import PriorityIcon from '../../../../assets/PriorityIcon.tsx'
+import { deleteTask, patchTask } from '../../../../store/todoActions.ts'
+import { AppDispatch } from '../../../../store/store.ts'
 
 type Props = {
   todo: Todo
@@ -16,27 +16,31 @@ type Props = {
 }
 
 const ListItem: FC<Props> = ({ todo, onEdit }) => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
 
   const onDeleteTodo = (id: string) => {
     dispatch(deleteTask(id))
   }
 
-  const onToggleStatus = (id: string) => {
-    dispatch(changeStatus(id))
+  const onToggleStatus = (id: string, payload: Partial<Todo>) => {
+    dispatch(patchTask({ id, payload }))
   }
 
   return (
     <Card className="listItem">
       <CardBody className="flex flex-row justify-between items-center p-2">
         <div>
-          <Checkbox defaultSelected={todo.isDone} onChange={() => onToggleStatus(todo.id)} lineThrough>
+          <Checkbox
+            lineThrough
+            defaultSelected={todo.isDone}
+            onChange={() => onToggleStatus(todo.id, { isDone: !todo.isDone })}
+          >
             {todo.title}
           </Checkbox>
         </div>
 
         <div className="flex items-center gap-4">
-          <PriorityIcon priority={todo.priority}/>
+          <PriorityIcon priority={todo.priority} />
 
           <p className="w-[230px]">
             {convertTodoDate(todo.creationTime)}

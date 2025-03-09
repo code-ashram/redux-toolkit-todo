@@ -42,7 +42,6 @@ const TodoForm: FC = () => {
     dispatch(selectTask(payload))
   }
 
-
   return (
     <Modal
       isDismissable={false}

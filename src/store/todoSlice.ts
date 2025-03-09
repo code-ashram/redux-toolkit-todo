@@ -6,7 +6,7 @@ import { Priority } from '../models'
 import Period from '../models/Period.ts'
 import Order from '../models/Order.ts'
 
-import { getTasks, postTask } from './todoActions.ts'
+import { getTasks, postTask, deleteTask, patchTask } from './todoActions.ts'
 
 interface TodoListState {
   tasks: Todo[]
@@ -44,7 +44,7 @@ const todoSlice = createSlice({
       })
       state.selectedTask = null
     },
-    deleteTask: (state, { payload }: PayloadAction<string>) => {
+    removeTask: (state, { payload }: PayloadAction<string>) => {
       state.tasks = state.tasks.filter((todo) => todo.id !== payload)
     },
     changeStatus: (state, { payload }: PayloadAction<string>) => {
@@ -139,13 +139,33 @@ const todoSlice = createSlice({
         state.loading = 'failed'
         state.error = action.payload as string
       })
-
+      .addCase(deleteTask.pending, (state) => {
+        state.loading = 'pending'
+      })
+      .addCase(deleteTask.fulfilled, (state, { payload }) => {
+        state.loading = 'succeeded'
+        state.tasks = state.tasks.filter((todo) => todo.id !== payload.id)
+      })
+      .addCase(deleteTask.rejected, (state) => {
+        state.loading = 'failed'
+      })
+      .addCase(patchTask.pending, (state) => {
+        state.loading = 'pending'
+      })
+      .addCase(patchTask.fulfilled, (state, { payload }) => {
+        state.loading = 'succeeded'
+        const todo = state.tasks.find((task) => task.id === payload.id)
+        if (todo) todo.isDone = !todo.isDone
+      })
+      .addCase(patchTask.rejected, (state) => {
+        state.loading = 'failed'
+      })
   }
 })
 
 export const {
   createTask,
-  deleteTask,
+  removeTask,
   changeStatus,
   updateTask,
   findTodo,
