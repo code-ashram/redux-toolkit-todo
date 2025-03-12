@@ -18,21 +18,49 @@ import { selectedTodo, selectTask } from '../../store/todoSlice.ts'
 
 import { Priority } from '../../models'
 import Todo from '../../models/Todo.ts'
-import { postTask, putTask } from '../../store/todoActions.ts'
 import { AppDispatch } from '../../store/store.ts'
+import { usePostTaskMutation, usePutTaskMutation } from '../../api/todoApi.ts'
 
 const TodoForm: FC = () => {
   const dispatch = useDispatch<AppDispatch>()
   const selectedTask = useSelector(selectedTodo)
   const { onOpenChange } = useDisclosure()
+  const [postTask] = usePostTaskMutation()
+  const [putTask] = usePutTaskMutation()
 
-  const handleSubmitTodo = (e: FormEvent) => {
+  const handleSubmitTodo = async (e: FormEvent) => {
     e.preventDefault()
-    dispatch(selectedTask?.id ? putTask(selectedTask as Todo) : postTask({
-      title: selectedTask?.title || '',
-      priority: selectedTask?.priority as Priority
-    }))
+
+    if (selectedTask?.id && selectedTask?.title) {
+      try {
+        await putTask(selectedTask as Todo).unwrap()
+      } catch (error) {
+        console.error('Failed to edit todo:', error)
+      }
+    } else {
+      try {
+        await postTask({
+          title: selectedTask?.title || '',
+          priority: selectedTask?.priority as Priority
+        }).unwrap()
+      } catch (error) {
+        console.error('Failed to add todo:', error)
+      }
+    }
   }
+
+  // const handleSubmitTodo = async (e: FormEvent) => {
+  //   e.preventDefault()
+  //   dispatch(selectedTask?.id
+  //     ? putTask(selectedTask as Todo)
+  //     : postTask({
+  //       title: selectedTask?.title || '',
+  //       priority: selectedTask?.priority as Priority,
+  //       creationTime: new Date().toISOString(),
+  //       isDone: false
+  //     })
+  //   )
+  // }
 
   const onClose = () => {
     dispatch(selectTask(null))

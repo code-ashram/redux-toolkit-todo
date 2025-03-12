@@ -46,7 +46,7 @@ const List: FC<Props> = ({ onEdit }) => {
   return (
     isLoading
       ? <Spinner color="warning" label="Loading..." />
-      : data ?
+      : data && searchTodo.length ?
         searchTodo.map((todo) => (
           <ListItem key={todo.id} todo={todo} onEdit={() => onEdit(todo)} />
         ))

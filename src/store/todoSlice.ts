@@ -34,7 +34,23 @@ const todoSlice = createSlice({
   name: 'tasks',
   initialState,
   reducers: {
-    setTodos: (state, { payload }: PayloadAction<Todo[]>) => {state.tasks = payload},
+    getTodos: (state, { payload }: PayloadAction<Todo[]>) => {
+      state.tasks = payload
+    },
+    setTodos: (state, { payload }: PayloadAction<Todo>) => {
+      state.tasks.push(payload)
+      state.selectedTask = null
+    },
+    putTodo: (state) => {
+      const task = state.tasks.find((task) =>
+        task.id === state.selectedTask?.id
+      )
+      if (task) {
+        task.title = state.selectedTask?.title || ''
+        task.priority = state.selectedTask?.priority ?? Priority.Mid
+      }
+      state.selectedTask = null
+    },
     createTask: (state, { payload }: PayloadAction<Omit<Todo, 'id' | 'creationTime' | 'isDone'>>) => {
       state.tasks.unshift({
         id: crypto.randomUUID(),
@@ -183,7 +199,9 @@ const todoSlice = createSlice({
 })
 
 export const {
+  getTodos,
   setTodos,
+  putTodo,
   createTask,
   removeTask,
   changeStatus,
