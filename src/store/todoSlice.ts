@@ -34,6 +34,7 @@ const todoSlice = createSlice({
   name: 'tasks',
   initialState,
   reducers: {
+    setTodos: (state, { payload }: PayloadAction<Todo[]>) => {state.tasks = payload},
     createTask: (state, { payload }: PayloadAction<Omit<Todo, 'id' | 'creationTime' | 'isDone'>>) => {
       state.tasks.unshift({
         id: crypto.randomUUID(),
@@ -182,6 +183,7 @@ const todoSlice = createSlice({
 })
 
 export const {
+  setTodos,
   createTask,
   removeTask,
   changeStatus,
