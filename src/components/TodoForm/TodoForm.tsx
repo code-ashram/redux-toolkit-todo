@@ -14,7 +14,7 @@ import {
   useDisclosure
 } from '@heroui/react'
 
-import { selectedTodo, selectTask } from '../../store/todoSlice.ts'
+import { clearTodo, selectedTodo, selectTask } from '../../store/todoSlice.ts'
 
 import { Priority } from '../../models'
 import Todo from '../../models/Todo.ts'
@@ -31,11 +31,11 @@ const TodoForm: FC = () => {
   const handleSubmitTodo = async (e: FormEvent) => {
     e.preventDefault()
 
-    if (!selectedTask) return
+    if (!selectedTask) dispatch(selectTask(null))
 
-    const mutation = selectedTask.id ? putTask(selectedTask as Todo) : postTask({
-      title: selectedTask.title || '',
-      priority: selectedTask.priority as Priority
+    const mutation = selectedTask?.id ? putTask(selectedTask as Todo) : postTask({
+      title: selectedTask?.title || '',
+      priority: selectedTask?.priority as Priority
     })
 
     try {
@@ -45,8 +45,8 @@ const TodoForm: FC = () => {
     }
   }
 
-  const onClose = () => {
-    dispatch(selectTask(null))
+  const handleCloseForm = () => {
+    dispatch(clearTodo())
   }
 
   const handleChangeTodo = (payload: Partial<Todo>) => {
@@ -59,7 +59,7 @@ const TodoForm: FC = () => {
       isKeyboardDismissDisabled={true}
       onOpenChange={onOpenChange}
       closeButton={
-        <Button color="default" variant="light" onPress={onClose}>
+        <Button color="default" variant="light" onPress={handleCloseForm}>
           X
         </Button>
       }
@@ -70,7 +70,7 @@ const TodoForm: FC = () => {
         <Form
           className="w-full max-w-lg flex flex-col gap-4"
           validationBehavior="native"
-          onReset={onClose}
+          onReset={handleCloseForm}
           onSubmit={handleSubmitTodo}
         >
           <ModalHeader className="flex flex-col gap-1">
