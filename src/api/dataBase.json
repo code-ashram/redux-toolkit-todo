@@ -2,17 +2,10 @@
   "todos": [
     {
       "id": "1",
-      "title": "Write a markup rfr",
+      "title": "Write a markup",
       "isDone": true,
       "creationTime": "2025-02-06T10:00:00.000Z",
       "priority": "Low"
-    },
-    {
-      "id": "2",
-      "title": "Make the components",
-      "isDone": false,
-      "creationTime": "2025-02-07T11:00:00.000Z",
-      "priority": "Mid"
     },
     {
       "id": "3",
@@ -27,13 +20,6 @@
       "isDone": true,
       "creationTime": "2025-02-14T14:10:00.000Z",
       "priority": "High"
-    },
-    {
-      "id": "5",
-      "title": "Make code refactoring",
-      "isDone": false,
-      "creationTime": "2025-02-16T15:25:00.000Z",
-      "priority": "Mid"
     },
     {
       "id": "6",
@@ -58,9 +44,16 @@
     },
     {
       "id": "f758",
-      "title": "fsdfsd 333",
-      "priority": "Mid",
+      "title": "Use Chat GPT",
+      "priority": "High",
       "creationTime": "2025-03-12T20:00:21.863Z",
+      "isDone": false
+    },
+    {
+      "id": "ac09",
+      "title": "Call to Kishor",
+      "priority": "Mid",
+      "creationTime": "2025-03-12T20:09:12.741Z",
       "isDone": false
     }
   ]

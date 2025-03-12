@@ -31,36 +31,19 @@ const TodoForm: FC = () => {
   const handleSubmitTodo = async (e: FormEvent) => {
     e.preventDefault()
 
-    if (selectedTask?.id && selectedTask?.title) {
-      try {
-        await putTask(selectedTask as Todo).unwrap()
-      } catch (error) {
-        console.error('Failed to edit todo:', error)
-      }
-    } else {
-      try {
-        await postTask({
-          title: selectedTask?.title || '',
-          priority: selectedTask?.priority as Priority
-        }).unwrap()
-      } catch (error) {
-        console.error('Failed to add todo:', error)
-      }
+    if (!selectedTask) return
+
+    const mutation = selectedTask.id ? putTask(selectedTask as Todo) : postTask({
+      title: selectedTask.title || '',
+      priority: selectedTask.priority as Priority
+    })
+
+    try {
+      await mutation.unwrap()
+    } catch (error) {
+      console.error('Failed to save todo:', error)
     }
   }
-
-  // const handleSubmitTodo = async (e: FormEvent) => {
-  //   e.preventDefault()
-  //   dispatch(selectedTask?.id
-  //     ? putTask(selectedTask as Todo)
-  //     : postTask({
-  //       title: selectedTask?.title || '',
-  //       priority: selectedTask?.priority as Priority,
-  //       creationTime: new Date().toISOString(),
-  //       isDone: false
-  //     })
-  //   )
-  // }
 
   const onClose = () => {
     dispatch(selectTask(null))
