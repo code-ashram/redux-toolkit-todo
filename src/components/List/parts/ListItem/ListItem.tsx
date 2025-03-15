@@ -7,8 +7,9 @@ import ItemDropdown from './parts/ItemDropdown.tsx'
 import Todo from '../../../../models/Todo.ts'
 import { convertTodoDate } from '../../../../utils/utils.ts'
 import PriorityIcon from '../../../../assets/PriorityIcon.tsx'
-import { deleteTask, patchTask } from '../../../../store/todoActions.ts'
+import { patchTask } from '../../../../store/todoActions.ts'
 import { AppDispatch } from '../../../../store/store.ts'
+import { useDeleteTaskMutation } from '../../../../api/todoApi.ts'
 
 type Props = {
   todo: Todo
@@ -17,9 +18,10 @@ type Props = {
 
 const ListItem: FC<Props> = ({ todo, onEdit }) => {
   const dispatch = useDispatch<AppDispatch>()
+  const [deleteTask] = useDeleteTaskMutation()
 
   const onDeleteTodo = (id: string) => {
-    dispatch(deleteTask(id))
+    deleteTask(id)
   }
 
   const onToggleStatus = (id: string, payload: Partial<Todo>) => {

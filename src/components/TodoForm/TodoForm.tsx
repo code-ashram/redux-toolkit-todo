@@ -14,12 +14,12 @@ import {
   useDisclosure
 } from '@heroui/react'
 
-import { clearTodo, selectedTodo, selectTask } from '../../store/todoSlice.ts'
-
-import { Priority } from '../../models'
-import Todo from '../../models/Todo.ts'
 import { AppDispatch } from '../../store/store.ts'
+import { clearTodo, selectedTodo, selectTask } from '../../store/todoSlice.ts'
 import { usePostTaskMutation, usePutTaskMutation } from '../../api/todoApi.ts'
+
+import Todo from '../../models/Todo.ts'
+import { Priority } from '../../models'
 
 const TodoForm: FC = () => {
   const dispatch = useDispatch<AppDispatch>()

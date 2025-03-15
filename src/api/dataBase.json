@@ -48,13 +48,6 @@
       "priority": "High",
       "creationTime": "2025-03-12T20:00:21.863Z",
       "isDone": false
-    },
-    {
-      "id": "ac09",
-      "title": "Call to Kishor",
-      "priority": "Mid",
-      "creationTime": "2025-03-12T20:09:12.741Z",
-      "isDone": false
     }
   ]
 }
