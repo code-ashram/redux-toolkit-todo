@@ -1,15 +1,14 @@
 import { FC } from 'react'
-import { useDispatch } from 'react-redux'
 import { Card, CardBody, Checkbox } from '@heroui/react'
+
+import { useDeleteTaskMutation, usePatchTaskMutation } from '../../../../api/todoApi.ts'
 
 import ItemDropdown from './parts/ItemDropdown.tsx'
 
 import Todo from '../../../../models/Todo.ts'
 import { convertTodoDate } from '../../../../utils/utils.ts'
+
 import PriorityIcon from '../../../../assets/PriorityIcon.tsx'
-import { patchTask } from '../../../../store/todoActions.ts'
-import { AppDispatch } from '../../../../store/store.ts'
-import { useDeleteTaskMutation } from '../../../../api/todoApi.ts'
 
 type Props = {
   todo: Todo
@@ -17,15 +16,15 @@ type Props = {
 }
 
 const ListItem: FC<Props> = ({ todo, onEdit }) => {
-  const dispatch = useDispatch<AppDispatch>()
   const [deleteTask] = useDeleteTaskMutation()
+  const [patchTask] = usePatchTaskMutation()
 
   const onDeleteTodo = (id: string) => {
     deleteTask(id)
   }
 
-  const onToggleStatus = (id: string, payload: Partial<Todo>) => {
-    dispatch(patchTask({ id, payload }))
+  const onToggleStatus = (id: string, todo: Partial<Todo>) => {
+    patchTask({ id, todo })
   }
 
   return (

@@ -1,28 +1,26 @@
-import { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect } from 'react'
+import { VisuallyHidden } from '@react-aria/visually-hidden'
+import { SwitchProps, useSwitch } from '@heroui/switch'
+import clsx from 'clsx'
 
-import clsx from "clsx";
+import { useTheme } from '../../hooks/useTheme.ts'
 
-import { VisuallyHidden } from "@react-aria/visually-hidden";
-import { SwitchProps, useSwitch } from "@heroui/switch";
-
-import { useTheme } from "../../hooks/useTheme.ts";
-
-import { SunFilledIcon, MoonFilledIcon } from './assets/icons.tsx';
+import { MoonFilledIcon, SunFilledIcon } from './assets/Icons.tsx'
 
 export interface ThemeSwitchProps {
   className?: string;
-  classNames?: SwitchProps["classNames"];
+  classNames?: SwitchProps['classNames'];
 }
 
 const ThemeSwitcher: FC<ThemeSwitchProps> = ({
   className,
-  classNames,
+  classNames
 }) => {
-  const [isMounted, setIsMounted] = useState(false);
+  const [isMounted, setIsMounted] = useState(false)
 
-  const { theme, toggleTheme } = useTheme();
+  const { theme, toggleTheme } = useTheme()
 
-  const onChange = toggleTheme;
+  const onChange = toggleTheme
 
   const {
     Component,
@@ -30,28 +28,28 @@ const ThemeSwitcher: FC<ThemeSwitchProps> = ({
     isSelected,
     getBaseProps,
     getInputProps,
-    getWrapperProps,
+    getWrapperProps
   } = useSwitch({
-    isSelected: theme === "light",
-    onChange,
-  });
+    isSelected: theme === 'light',
+    onChange
+  })
 
   useEffect(() => {
-    setIsMounted(true);
-  }, [isMounted]);
+    setIsMounted(true)
+  }, [isMounted])
 
   // Prevent Hydration Mismatch
-  if (!isMounted) return <div className="w-6 h-6" />;
+  if (!isMounted) return <div className="w-6 h-6" />
 
   return (
     <Component
-      aria-label={isSelected ? "Switch to dark mode" : "Switch to light mode"}
+      aria-label={isSelected ? 'Switch to dark mode' : 'Switch to light mode'}
       {...getBaseProps({
         className: clsx(
-          "px-px transition-opacity hover:opacity-80 cursor-pointer",
+          'px-px transition-opacity hover:opacity-80 cursor-pointer',
           className,
-          classNames?.base,
-        ),
+          classNames?.base
+        )
       })}
     >
       <VisuallyHidden>
@@ -62,18 +60,18 @@ const ThemeSwitcher: FC<ThemeSwitchProps> = ({
         className={slots.wrapper({
           class: clsx(
             [
-              "w-auto h-auto",
-              "bg-transparent",
-              "rounded-lg",
-              "flex items-center justify-center",
-              "group-data-[selected=true]:bg-transparent",
-              "!text-default-500",
-              "pt-px",
-              "px-0",
-              "mx-0",
+              'w-auto h-auto',
+              'bg-transparent',
+              'rounded-lg',
+              'flex items-center justify-center',
+              'group-data-[selected=true]:bg-transparent',
+              '!text-default-500',
+              'pt-px',
+              'px-0',
+              'mx-0'
             ],
-            classNames?.wrapper,
-          ),
+            classNames?.wrapper
+          )
         })}
       >
         {isSelected ? (
@@ -83,7 +81,7 @@ const ThemeSwitcher: FC<ThemeSwitchProps> = ({
         )}
       </div>
     </Component>
-  );
-};
+  )
+}
 
-export default ThemeSwitcher;
+export default ThemeSwitcher

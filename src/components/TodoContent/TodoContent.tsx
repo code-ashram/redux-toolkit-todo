@@ -2,13 +2,13 @@ import { FC } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, Select, SelectItem, Tab, Tabs } from '@heroui/react'
 
+import { selectTask, order } from '../../store/todoSlice.ts'
 import {
   sortByPeriod,
   sortByStatus,
   toggleOrderByDate,
   toggleOrderByTitle
 } from '../../store/todoSlice.ts'
-import { selectTask, order } from '../../store/todoSlice.ts'
 
 import List from '../List/List.tsx'
 

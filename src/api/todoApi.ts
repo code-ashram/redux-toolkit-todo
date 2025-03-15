@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 import Todo from '../models/Todo.ts'
-import { getTodos, setTodos, putTodo, removeTask } from '../store/todoSlice.ts'
+import { getTodos, setTodos, putTodo, removeTask, changeStatus } from '../store/todoSlice.ts'
 
 const BASE_URL = 'http://localhost:3000'
 
@@ -58,7 +58,7 @@ const todoApi = createApi({
     deleteTask: builder.mutation<Todo, string>({
       query: (id) => ({
         url: `/todos/${id}`,
-        method: 'DELETE',
+        method: 'DELETE'
       }),
       async onQueryStarted (id, { dispatch }) {
         try {
@@ -68,10 +68,24 @@ const todoApi = createApi({
         }
       },
       invalidatesTags: () => [{ type: 'Todo' }]
+    }),
+    patchTask: builder.mutation<Todo, { id: string, todo: Partial<Todo> }>({
+      query: ({ id, todo }) => ({
+        url: `/todos/${id}`, todo,
+        method: 'PATCH',
+        body: todo
+      }),
+      async onQueryStarted ({ id }, { dispatch }) {
+        try {
+          dispatch(changeStatus(id))
+        } catch (error) {
+          console.error('Todo status change error:', error)
+        }
+      }
     })
   })
 })
 
-export const { useGetTodosQuery, usePostTaskMutation, usePutTaskMutation, useDeleteTaskMutation } = todoApi
+export const { useGetTodosQuery, usePostTaskMutation, usePutTaskMutation, useDeleteTaskMutation, usePatchTaskMutation } = todoApi
 
 export default todoApi

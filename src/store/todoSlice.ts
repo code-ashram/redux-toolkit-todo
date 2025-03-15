@@ -1,12 +1,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
+import { Priority } from '../models'
 import Todo from '../models/Todo.ts'
 import Status from '../models/Status.ts'
-import { Priority } from '../models'
 import Period from '../models/Period.ts'
 import Order from '../models/Order.ts'
 
 import { getTasks, postTask, deleteTask, patchTask, putTask } from './todoActions.ts'
+import {
+  sortListByAscendingTitle,
+  sortListByDescendingTitle,
+  sortListByFirstDate,
+  sortListByLastDate
+} from '../utils/utils.ts'
 
 interface TodoListState {
   tasks: Todo[]
@@ -108,27 +114,42 @@ const todoSlice = createSlice({
   },
   selectors: {
     search: (state) => state.search,
-    todos: (state) => state.tasks.filter((todo) => {
-        let isVisible: boolean
+    todos: (state) => {
+      const filteredList = state.tasks.filter((todo) => {
+          let isVisible: boolean
 
-        const isAvailable: boolean = state.period === Period.All
-          ? true
-          : new Date(todo.creationTime) > new Date(new Date().setDate(new Date().getDate() - state.period))
+          const isAvailable: boolean = state.period === Period.All
+            ? true
+            : new Date(todo.creationTime) > new Date(new Date().setDate(new Date().getDate() - state.period))
 
-        switch (state.status) {
-          case Status.Completed:
-            isVisible = todo.isDone
-            break
-          case Status.Active:
-            isVisible = !todo.isDone
-            break
-          default:
-            isVisible = true
+          switch (state.status) {
+            case Status.Completed:
+              isVisible = todo.isDone
+              break
+            case Status.Active:
+              isVisible = !todo.isDone
+              break
+            default:
+              isVisible = true
+          }
+
+          return isAvailable && isVisible && todo.title.toLowerCase().includes(state.search.toLowerCase())
         }
+      )
 
-        return isAvailable && isVisible && todo.title.toLowerCase().includes(state.search.toLowerCase())
+      switch (state.order) {
+        case Order.Date_Ascending:
+          return sortListByFirstDate(filteredList)
+        case Order.Date_Descending:
+          return sortListByLastDate(filteredList)
+        case Order.Title_Ascending:
+          return sortListByAscendingTitle(filteredList)
+        case Order.Title_Descending:
+          return sortListByDescendingTitle(filteredList)
+        default:
+          return sortListByFirstDate(filteredList)
       }
-    ),
+    },
     selectedTodo: (state) => state.selectedTask,
     status: (state) => state.status,
     period: (state) => state.period,
